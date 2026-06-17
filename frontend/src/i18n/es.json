@@ -1,0 +1,77 @@
+{
+  "app": {
+    "title": "Sistema Integrado",
+    "subtitle": "RH & Nómina",
+    "version": "v1.0"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "modules": {
+      "hr": "Recursos Humanos",
+      "payroll": "Nómina",
+      "system_admin": "Administración del Sistema"
+    },
+    "options": {
+      "requests": "Solicitudes",
+      "staff": "Personal",
+      "actions": "Acciones",
+      "reports": "Informes",
+      "settings": "Configuración",
+      "designation": "Designación",
+      "changes": "Cambios",
+      "separation": "Separación",
+      "warnings": "Amonestaciones",
+      "vacations": "Vacaciones",
+      "absences": "Ausencias",
+      "employees": "Empleados",
+      "transactions": "Transacciones",
+      "calculations": "Cálculos",
+      "process": "Proceso",
+      
+      "company": "Empresa",
+      "select_company": "Seleccionar empresa",
+      "companies": "Empresas",
+      "company_info": "Información de la empresa",
+      
+      "user_management": "Gestión de usuarios",
+      "users": "Usuarios",
+      "user_profiles": "Perfiles de usuarios",
+      "user_permissions": "Permisos de usuarios",
+      
+      "general": "General",
+      "chart_of_accounts": "Catálogo de Cuentas",
+      "number_sequences": "Secuencias numéricas",
+      "currencies": "Monedas",
+      "accounting_periods": "Periodos Contables",
+      "general_parameters": "Parámetros Generales",
+      "taxes": "Impuestos",
+      "continents": "Continentes",
+      "countries": "Países",
+      "cities": "Ciudades",
+      "municipalities": "Municipios",
+      "accounting_departments": "Departamentos contables",
+      "cost_centers": "Centro de costo contable",
+      "accounting_purpose": "Propósito contable",
+      "units_of_measure": "Unidades de medidas",
+      "unit_conversion": "Conversión de unidades de medidas"
+    }
+  },
+  "header": {
+    "role": "Recursos Humanos",
+    "logout": "Salir"
+  },
+  "dashboard": {
+    "title": "Panel de Control",
+    "subtitle": "Resumen operativo del día — Sistema de Recursos Humanos",
+    "kpi": {
+      "active_employees": "Empleados Activos",
+      "pending_requests": "Solicitudes Pendientes",
+      "approved_actions": "Acciones Aprobadas",
+      "on_vacation": "De Vacaciones"
+    },
+    "tables": {
+      "latest_requests": "Últimas Solicitudes",
+      "alerts": "Alertas de RRHH"
+    }
+  }
+}

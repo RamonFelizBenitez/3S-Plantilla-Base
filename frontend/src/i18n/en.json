@@ -1,0 +1,77 @@
+{
+  "app": {
+    "title": "Integrated System",
+    "subtitle": "HR & Payroll",
+    "version": "v1.0"
+  },
+  "menu": {
+    "dashboard": "Dashboard",
+    "modules": {
+      "hr": "Human Resources",
+      "payroll": "Payroll",
+      "system_admin": "System Administration"
+    },
+    "options": {
+      "requests": "Requests",
+      "staff": "Staff",
+      "actions": "Actions",
+      "reports": "Reports",
+      "settings": "Settings",
+      "designation": "Designation",
+      "changes": "Changes",
+      "separation": "Separation",
+      "warnings": "Warnings",
+      "vacations": "Vacations",
+      "absences": "Absences",
+      "employees": "Employees",
+      "transactions": "Transactions",
+      "calculations": "Calculations",
+      "process": "Process",
+      
+      "company": "Company",
+      "select_company": "Select Company",
+      "companies": "Companies",
+      "company_info": "Company Information",
+      
+      "user_management": "User Management",
+      "users": "Users",
+      "user_profiles": "User Profiles",
+      "user_permissions": "User Permissions",
+      
+      "general": "General",
+      "chart_of_accounts": "Chart of Accounts",
+      "number_sequences": "Number Sequences",
+      "currencies": "Currencies",
+      "accounting_periods": "Accounting Periods",
+      "general_parameters": "General Parameters",
+      "taxes": "Taxes",
+      "continents": "Continents",
+      "countries": "Countries",
+      "cities": "Cities",
+      "municipalities": "Municipalities",
+      "accounting_departments": "Accounting Departments",
+      "cost_centers": "Cost Centers",
+      "accounting_purpose": "Accounting Purpose",
+      "units_of_measure": "Units of Measure",
+      "unit_conversion": "Unit Conversion"
+    }
+  },
+  "header": {
+    "role": "Human Resources",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Control Panel",
+    "subtitle": "Daily operations summary — Human Resources System",
+    "kpi": {
+      "active_employees": "Active Employees",
+      "pending_requests": "Pending Requests",
+      "approved_actions": "Approved Actions",
+      "on_vacation": "On Vacation"
+    },
+    "tables": {
+      "latest_requests": "Latest Requests",
+      "alerts": "HR Alerts"
+    }
+  }
+}
