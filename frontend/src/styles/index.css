@@ -239,11 +239,12 @@ ul { list-style: none; }
 
 .nav-sub-item {
   display: block;
-  padding: 7px 16px 7px 38px;
+  padding: 8px 16px 8px 16px;
+  margin: 2px 12px 2px 32px;
   color: var(--nav-text);
-  font-size: 12.5px;
+  font-size: 13px;
   transition: background var(--transition), color var(--transition);
-  border-left: 2px solid transparent;
+  border-radius: var(--radius-sm);
 }
 
 .nav-sub-item:hover {
@@ -253,8 +254,9 @@ ul { list-style: none; }
 
 .nav-sub-item.active {
   color: #fff;
-  border-left-color: var(--clr-brand);
-  background: var(--nav-active-bg);
+  background: #3b82f6;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.4);
+  font-weight: 500;
 }
 
 /* Sidebar footer — pinned at bottom, never scrolls */
@@ -3512,5 +3514,144 @@ ul { list-style: none; }
     width: 100% !important;
     height: 44px;
   }
+}
+
+
+/* --- DATATABLE STYLES (Phase 2.1) --- */
+.page-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.btn-primary {
+  background: var(--clr-blue);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.btn-primary:hover {
+  opacity: 0.9;
+}
+.table-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  overflow: hidden;
+  border: 1px solid #edf2f7;
+}
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.custom-table th {
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 16px;
+  text-align: left;
+  border-bottom: 1px solid #edf2f7;
+}
+.custom-table td {
+  padding: 16px;
+  border-bottom: 1px solid #edf2f7;
+  color: #334155;
+  font-size: 14px;
+  vertical-align: middle;
+}
+.custom-table tbody tr:hover {
+  background-color: #f8fafc;
+}
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.status-dot.active { background: #10b981; }
+.status-dot.inactive { background: #ef4444; }
+.btn-action-pill {
+  background: #e0e7ff;
+  color: #4f46e5;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-action-pill:hover {
+  background: #c7d2fe;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   LOGIN STYLES
+═══════════════════════════════════════════════════════════ */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--clr-bg);
+}
+.login-box {
+  background: var(--clr-surface);
+  padding: 40px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+.login-box h2 {
+  margin-bottom: 24px;
+  color: var(--clr-brand);
+  font-size: 24px;
+}
+.login-box .form-group {
+  margin-bottom: 16px;
+  text-align: left;
+}
+.login-box .form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 13px;
+  color: var(--clr-text-2);
+}
+.login-box .form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  transition: border-color var(--transition);
+}
+.login-box .form-group input:focus {
+  outline: none;
+  border-color: var(--clr-brand);
+}
+.login-box .btn {
+  width: 100%;
+  justify-content: center;
+  margin-top: 10px;
+  padding: 12px;
+  font-size: 14px;
 }
 

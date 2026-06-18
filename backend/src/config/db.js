@@ -3,9 +3,12 @@ require('dotenv').config();
 
 const config = {
     user: process.env.DB_USER || 'sa',
-    password: process.env.DB_PASSWORD || '12345678798',
-    server: process.env.DB_SERVER || 'DESKTOP-FHEB4I8\\SQLEXPRESS',
+    password: process.env.DB_PASSWORD || '123456789',
+    server: process.env.DB_SERVER && process.env.DB_SERVER.includes('\\') 
+        ? 'localhost' 
+        : (process.env.DB_SERVER || 'localhost'),
     database: process.env.DB_NAME || 'RHDBW',
+    port: parseInt(process.env.DB_PORT) || 1433,
     options: {
         encrypt: false, // For local SQL Server instances
         trustServerCertificate: true,

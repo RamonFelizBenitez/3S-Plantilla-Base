@@ -2,26 +2,86 @@ import React, { useState, useEffect, useContext } from 'react';
 import { LogOut, User } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { LanguageContext } from '../../i18n/LanguageContext';
+import { showToast } from '../../utils/alerts';
 
 const Header = ({ toggleSidebar }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const username = localStorage.getItem('username') || 'Administrador';
   
+  // Extraer empresas y empresa seleccionada
+  const [empresas, setEmpresas] = useState([]);
+  const [selectedEmpresaId, setSelectedEmpresaId] = useState('');
+
   const { lang, setLang, t } = useContext(LanguageContext);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
+    const loadEmpresas = () => {
+      const savedEmpresas = JSON.parse(localStorage.getItem('empresas') || '[]');
+      const savedEmpresaId = localStorage.getItem('empresaId');
+      
+      if (savedEmpresas.length > 0) {
+        setEmpresas(savedEmpresas);
+        
+        // Verificar si la empresa seleccionada actual todavía existe en la lista
+        const empresaExiste = savedEmpresas.find(e => e.EmpresaID.toString() === savedEmpresaId?.toString());
+        
+        if (!savedEmpresaId || !empresaExiste) {
+          const firstEmpresaId = savedEmpresas[0].EmpresaID.toString();
+          setSelectedEmpresaId(firstEmpresaId);
+          localStorage.setItem('empresaId', firstEmpresaId);
+        } else {
+          setSelectedEmpresaId(savedEmpresaId);
+        }
+      } else {
+        setEmpresas([]);
+        setSelectedEmpresaId('');
+      }
+    };
+
+    // Cargar inicial
+    loadEmpresas();
+
+    // Notificar si acabamos de cambiar de empresa (viene de un reload)
+    const toastMsg = sessionStorage.getItem('toastEmpresaCambiada');
+    if (toastMsg) {
+      // Pequeño delay para asegurar que el DOM cargó y el toast se vea bien
+      setTimeout(() => showToast(toastMsg), 300);
+      sessionStorage.removeItem('toastEmpresaCambiada');
+    }
+
+    // Escuchar actualizaciones dinámicas
+    window.addEventListener('empresasUpdated', loadEmpresas);
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
-    return () => clearInterval(timer);
+    
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('empresasUpdated', loadEmpresas);
+    };
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    localStorage.removeItem('empresas');
+    localStorage.removeItem('empresaId');
     navigate('/login');
+  };
+
+  const handleEmpresaChange = (e) => {
+    const newId = e.target.value;
+    const empresaTarget = empresas.find(emp => emp.EmpresaID.toString() === newId.toString());
+    const nombreEmpresa = empresaTarget ? empresaTarget.NombreEmpresa : 'otra empresa';
+    
+    localStorage.setItem('empresaId', newId);
+    sessionStorage.setItem('toastEmpresaCambiada', `Área de trabajo cambiada a: ${nombreEmpresa}`);
+    
+    setSelectedEmpresaId(newId);
+    // Forzar recarga de página para limpiar estados residuales y traer datos de la nueva empresa
+    window.location.reload();
   };
 
   // Basic breadcrumb logic
@@ -66,6 +126,31 @@ const Header = ({ toggleSidebar }) => {
             EN
           </button>
         </div>
+
+        {/* Company Switcher */}
+        {empresas.length > 0 && (
+          <div style={{ marginRight: '15px', display: 'flex', alignItems: 'center' }}>
+            <select 
+              value={selectedEmpresaId} 
+              onChange={handleEmpresaChange}
+              style={{
+                padding: '4px 8px',
+                borderRadius: '4px',
+                border: '1px solid #cbd5e1',
+                background: '#f8fafc',
+                fontSize: '12px',
+                fontWeight: '600',
+                color: '#334155',
+                outline: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              {empresas.map(emp => (
+                <option key={emp.EmpresaID} value={emp.EmpresaID}>{emp.NombreEmpresa}</option>
+              ))}
+            </select>
+          </div>
+        )}
 
         {/* User Info */}
         <div className="topbar-user">

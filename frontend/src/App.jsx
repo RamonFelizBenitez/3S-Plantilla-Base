@@ -4,6 +4,24 @@ import { LanguageProvider } from './i18n/LanguageContext';
 import MainLayout from './components/layout/MainLayout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import Empresas from './pages/administracion/Empresas';
+import EmpresaInfo from './pages/administracion/EmpresaInfo';
+import Usuarios from './pages/administracion/Usuarios';
+import Perfiles from './pages/administracion/Perfiles';
+import Permisos from './pages/administracion/Permisos';
+import Continentes from './pages/administracion/Continentes';
+import Paises from './pages/administracion/Paises';
+import Ciudades from './pages/administracion/Ciudades';
+import Municipios from './pages/administracion/Municipios';
+import Secuencias from './pages/administracion/Secuencias';
+import PeriodosContables from './pages/administracion/PeriodosContables';
+import CatalogoCuentas from './pages/administracion/CatalogoCuentas';
+import Monedas from './pages/administracion/Monedas';
+import DepartamentosContables from './pages/administracion/DepartamentosContables';
+import CentroCostos from './pages/administracion/CentroCostos';
+import Propositos from './pages/administracion/Propositos';
+import UnidadesMedidas from './pages/administracion/UnidadesMedidas';
+import ConversionUnidades from './pages/administracion/ConversionUnidades';
 import Placeholder from './pages/Placeholder';
 
 const App = () => {
@@ -84,30 +102,30 @@ const App = () => {
           
           {/* Carpeta Empresa */}
           <Route path="administracion/empresa/seleccionar" element={<Placeholder title="Seleccionar Empresa" />} />
-          <Route path="administracion/empresa/empresas" element={<Placeholder title="Empresas" />} />
-          <Route path="administracion/empresa/informacion" element={<Placeholder title="Información de la Empresa" />} />
+          <Route path="administracion/empresa/empresas" element={<Empresas />} />
+          <Route path="administracion/empresa/informacion" element={<EmpresaInfo />} />
 
           {/* Carpeta Gestión de Usuarios */}
-          <Route path="administracion/usuarios/usuarios" element={<Placeholder title="Usuarios" />} />
-          <Route path="administracion/usuarios/perfiles" element={<Placeholder title="Perfiles de Usuarios" />} />
-          <Route path="administracion/usuarios/permisos" element={<Placeholder title="Permisos de Usuarios" />} />
+          <Route path="administracion/usuarios/usuarios" element={<Usuarios />} />
+          <Route path="administracion/usuarios/perfiles" element={<Perfiles />} />
+          <Route path="administracion/usuarios/permisos" element={<Permisos />} />
 
           {/* Carpeta General */}
-          <Route path="administracion/general/catalogo-cuentas" element={<Placeholder title="Catálogo de Cuentas" />} />
-          <Route path="administracion/general/secuencias-numericas" element={<Placeholder title="Secuencias Numéricas" />} />
-          <Route path="administracion/general/monedas" element={<Placeholder title="Monedas" />} />
-          <Route path="administracion/general/periodos-contables" element={<Placeholder title="Periodos Contables" />} />
+          <Route path="administracion/general/catalogo-cuentas" element={<CatalogoCuentas />} />
+          <Route path="administracion/general/secuencias-numericas" element={<Secuencias />} />
+          <Route path="administracion/general/monedas" element={<Monedas />} />
+          <Route path="administracion/general/periodos-contables" element={<PeriodosContables />} />
           <Route path="administracion/general/parametros-generales" element={<Placeholder title="Parámetros Generales" />} />
           <Route path="administracion/general/impuestos" element={<Placeholder title="Impuestos" />} />
-          <Route path="administracion/general/continentes" element={<Placeholder title="Continentes" />} />
-          <Route path="administracion/general/paises" element={<Placeholder title="Países" />} />
-          <Route path="administracion/general/ciudades" element={<Placeholder title="Ciudades" />} />
-          <Route path="administracion/general/municipios" element={<Placeholder title="Municipios" />} />
-          <Route path="administracion/general/departamentos-contables" element={<Placeholder title="Departamentos Contables" />} />
-          <Route path="administracion/general/centro-costo" element={<Placeholder title="Centro de Costo Contable" />} />
-          <Route path="administracion/general/proposito-contable" element={<Placeholder title="Propósito Contable" />} />
-          <Route path="administracion/general/unidades-medidas" element={<Placeholder title="Unidades de Medidas" />} />
-          <Route path="administracion/general/conversion-unidades" element={<Placeholder title="Conversión de Unidades de Medidas" />} />
+          <Route path="administracion/general/continentes" element={<Continentes />} />
+          <Route path="administracion/general/paises" element={<Paises />} />
+          <Route path="administracion/general/ciudades" element={<Ciudades />} />
+          <Route path="administracion/general/municipios" element={<Municipios />} />
+          <Route path="administracion/general/departamentos-contables" element={<DepartamentosContables />} />
+          <Route path="administracion/general/centro-costo" element={<CentroCostos />} />
+          <Route path="administracion/general/proposito-contable" element={<Propositos />} />
+          <Route path="administracion/general/unidades-medidas" element={<UnidadesMedidas />} />
+          <Route path="administracion/general/conversion-unidades" element={<ConversionUnidades />} />
           
           </Route>
         </Routes>

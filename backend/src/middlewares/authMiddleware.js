@@ -13,7 +13,19 @@ const authMiddleware = (req, res, next) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret_key_rhdbw_123');
-        req.user = decoded;
+        
+        // Asignamos el decoded payload (que ahora es el user object directo)
+        // Y leemos el Header 'x-empresa-id' inyectado por el Frontend
+        req.user = decoded.user ? decoded.user : decoded;
+        
+        const empresaId = req.header('x-empresa-id');
+        if (empresaId) {
+            req.user.empresaId = parseInt(empresaId, 10);
+        } else {
+            // Fallback (Solo para dev si no se envía la cabecera)
+            req.user.empresaId = 1;
+        }
+        
         next();
     } catch (err) {
         res.status(401).json({ message: 'Token is not valid' });
