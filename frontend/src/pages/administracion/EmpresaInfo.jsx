@@ -13,6 +13,8 @@ const EmpresaInfo = () => {
   const [selectedEmpresa, setSelectedEmpresa] = useState(null); // The full empresa object
   const [formData, setFormData] = useState({ ...emptyInfo });
   const [loading, setLoading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState('');
   
   const [paises, setPaises] = useState([]);
   const [ciudades, setCiudades] = useState([]);
@@ -72,6 +74,8 @@ const EmpresaInfo = () => {
     if (!id) {
         setSelectedEmpresa(null);
         setFormData({ ...emptyInfo });
+        setSelectedFile(null);
+        setPreviewUrl('');
         return;
     }
     
@@ -94,6 +98,9 @@ const EmpresaInfo = () => {
                 Representante: data.Representante || '',
                 CargoRepresentante: data.CargoRepresentante || ''
             });
+            setSelectedFile(null);
+            // If the server URL is returned, show it directly. We assume it's relative like /uploads/...
+            setPreviewUrl(data.Logo ? data.Logo : '');
         }
     } catch (err) {
         console.error(err);
@@ -107,11 +114,31 @@ const EmpresaInfo = () => {
     
     setLoading(true);
     try {
+        let currentLogo = formData.Logo;
+
+        // Si hay un archivo nuevo, lo subimos primero
+        if (selectedFile) {
+            const formDataUpload = new FormData();
+            formDataUpload.append('logo', selectedFile);
+            const uploadRes = await fetch(`/api/empresas/${selectedEmpresa.EmpresaID}/logo`, {
+                method: 'POST',
+                body: formDataUpload
+            });
+            if (uploadRes.ok) {
+                const uploadData = await uploadRes.json();
+                currentLogo = uploadData.logoUrl;
+                setFormData(prev => ({ ...prev, Logo: currentLogo }));
+            } else {
+                return showToast("Error al subir el logotipo");
+            }
+        }
+
         const payload = {
             NombreEmpresa: selectedEmpresa.NombreEmpresa,
             Activa: selectedEmpresa.Activa,
             Info: {
                 ...formData,
+                Logo: currentLogo,
                 PaisID: formData.PaisID ? parseInt(formData.PaisID) : null,
                 CiudadID: formData.CiudadID ? parseInt(formData.CiudadID) : null,
                 MunicipioID: formData.MunicipioID ? parseInt(formData.MunicipioID) : null
@@ -134,6 +161,14 @@ const EmpresaInfo = () => {
         showToast("Error de conexión");
     } finally {
         setLoading(false);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
     }
   };
 
@@ -179,8 +214,13 @@ const EmpresaInfo = () => {
             <input type="text" name="RNC" value={formData.RNC} onChange={handleChange} style={inputStyle} />
           </div>
           <div>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 500, color: '#475569' }}>Logotipo (URL o Archivo)</label>
-            <input type="text" name="Logo" value={formData.Logo} onChange={handleChange} placeholder="https://..." style={inputStyle} />
+            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 500, color: '#475569' }}>Logotipo de la Empresa</label>
+            <input type="file" accept="image/*" onChange={handleFileChange} style={{...inputStyle, padding: '7px'}} />
+            {previewUrl && (
+              <div style={{ marginTop: '10px', padding: '10px', border: '1px dashed #cbd5e1', borderRadius: '6px', textAlign: 'center' }}>
+                <img src={previewUrl} alt="Logo Preview" style={{ maxHeight: '100px', maxWidth: '100%', objectFit: 'contain' }} />
+              </div>
+            )}
           </div>
         </div>
 

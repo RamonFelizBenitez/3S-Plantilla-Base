@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
-const Modal = ({ title, isOpen, onClose, children, onSubmit, auditData, size = 'default', maxHeight = '70vh' }) => {
+const Modal = ({ title, isOpen, onClose, children, onSubmit, auditData, size = 'default', maxHeight = '70vh', hideFooter = false, headerActions = null }) => {
   const [activeTab, setActiveTab] = useState('general');
 
   useEffect(() => {
@@ -14,10 +14,13 @@ const Modal = ({ title, isOpen, onClose, children, onSubmit, auditData, size = '
 
   return (
     <div style={overlayStyle}>
-      <div style={{ ...modalStyle, maxWidth: size === 'lg' ? '1000px' : size === 'md' ? '800px' : '600px' }}>
+      <div style={{ ...modalStyle, maxWidth: size === 'xl' ? '1200px' : size === 'lg' ? '1000px' : size === 'md' ? '800px' : '600px' }}>
         <div style={headerStyle}>
-          <h3 style={{ margin: 0, color: '#1e293b' }}>{title}</h3>
-          <button onClick={onClose} style={closeBtnStyle}><X size={20} /></button>
+          <h3 style={{ margin: 0, color: '#0369a1', fontWeight: 'bold' }}>{title}</h3>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {headerActions}
+            <button onClick={onClose} style={closeBtnStyle}><X size={20} /></button>
+          </div>
         </div>
         
         {auditData && (
@@ -62,10 +65,10 @@ const Modal = ({ title, isOpen, onClose, children, onSubmit, auditData, size = '
           )}
         </div>
         
-        {activeTab === 'general' && (
+        {activeTab === 'general' && !hideFooter && (
           <div style={{ padding: '20px', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
-            <button onClick={onClose} style={cancelBtnStyle}>Cancelar</button>
-            <button onClick={onSubmit} className="btn-primary" style={{ padding: '10px 16px', border: 'none', background: '#2563eb', color: '#fff', borderRadius: '6px', cursor: 'pointer', fontWeight: 500 }}>Guardar</button>
+            <button type="button" onClick={onClose} style={cancelBtnStyle}>Cancelar</button>
+            <button type="button" onClick={onSubmit} className="btn-primary" style={{ padding: '10px 16px', border: 'none', background: '#2563eb', color: '#fff', borderRadius: '6px', cursor: 'pointer', fontWeight: 500 }}>Guardar</button>
           </div>
         )}
       </div>
@@ -76,17 +79,17 @@ const Modal = ({ title, isOpen, onClose, children, onSubmit, auditData, size = '
 const overlayStyle = {
   position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
   backgroundColor: 'rgba(15, 23, 42, 0.5)', backdropFilter: 'blur(2px)',
-  display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999
+  display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
 };
 const modalStyle = {
   background: '#fff', borderRadius: '8px', width: '90%', maxWidth: '600px',
   boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', overflow: 'hidden'
 };
 const headerStyle = {
-  padding: '16px 24px', borderBottom: '1px solid #e2e8f0', display: 'flex',
-  justifyContent: 'space-between', alignItems: 'center'
+  padding: '16px 24px', borderBottom: '1px solid #93c5fd', display: 'flex',
+  justifyContent: 'space-between', alignItems: 'center', background: '#bfdbfe'
 };
-const closeBtnStyle = { background: 'none', border: 'none', cursor: 'pointer', color: '#64748b' };
+const closeBtnStyle = { background: 'none', border: 'none', cursor: 'pointer', color: '#0369a1' };
 const cancelBtnStyle = { background: 'none', border: '1px solid #cbd5e1', padding: '8px 16px', borderRadius: '6px', cursor: 'pointer', fontWeight: '500' };
 const auditInputStyle = { width: '100%', padding: '10px 14px', borderRadius: '6px', border: '1px solid #e2e8f0', background: '#f8fafc', color: '#64748b', outline: 'none' };
 

@@ -22,6 +22,19 @@ import CentroCostos from './pages/administracion/CentroCostos';
 import Propositos from './pages/administracion/Propositos';
 import UnidadesMedidas from './pages/administracion/UnidadesMedidas';
 import ConversionUnidades from './pages/administracion/ConversionUnidades';
+import Cargos from './pages/nomina/Cargos';
+import Solicitudes from './pages/recursos_humanos/Solicitudes';
+import InfoComplementariaGen from './pages/recursos_humanos/InfoComplementariaGen';
+import GruposOcupacionales from './pages/recursos_humanos/GruposOcupacionales';
+import Sedes from './pages/recursos_humanos/Sedes';
+import TiposAcciones from './pages/recursos_humanos/TiposAcciones';
+import Turnos from './pages/recursos_humanos/Turnos';
+import Direcciones from './pages/recursos_humanos/Direcciones';
+import Designaciones from './pages/recursos_humanos/Designaciones';
+import DesignacionPrint from './pages/recursos_humanos/DesignacionPrint';
+import TiposNominas from './pages/recursos_humanos/TiposNominas';
+import ParametrosRRHH from './pages/recursos_humanos/ParametrosRRHH';
+import Empleados from './pages/nomina/Empleados';
 import Placeholder from './pages/Placeholder';
 
 const App = () => {
@@ -30,6 +43,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/imprimir/designacion/:id" element={<DesignacionPrint />} />
           
           {/* Rutas Protegidas (simuladas aquí, idealmente usar un componente PrivateRoute) */}
           <Route path="/" element={<MainLayout />}>
@@ -53,14 +67,25 @@ const App = () => {
             <Route path="informes/empleados" element={<Placeholder title="Lista de Empleados" />} />
             <Route path="informes/acciones" element={<Placeholder title="Lista de Acciones" />} />
             
+            {/* INFORMACIÓN COMPLEMENTARIA (RRHH) */}
+            <Route path="recursos-humanos/info/parentescos" element={<InfoComplementariaGen title="Parentescos" endpoint="parentescos" idField="ParentescoID" />} />
+            <Route path="recursos-humanos/info/niveles-academicos" element={<InfoComplementariaGen title="Niveles Académicos" endpoint="niveles-academicos" idField="NivelAcademicoID" />} />
+            <Route path="recursos-humanos/info/titulos-academicos" element={<InfoComplementariaGen title="Títulos Académicos" endpoint="titulos-academicos" idField="TituloAcademicoID" />} />
+            <Route path="recursos-humanos/info/idiomas" element={<InfoComplementariaGen title="Idiomas" endpoint="idiomas" idField="IdiomaID" />} />
+            <Route path="recursos-humanos/info/traducciones" element={<InfoComplementariaGen title="Niveles de Traducción" endpoint="traducciones" idField="NivelTraduccionID" />} />
+            <Route path="recursos-humanos/info/actividades" element={<InfoComplementariaGen title="Actividades" endpoint="actividades" idField="ActividadID" />} />
+
             {/* CONFIGURACIÓN (RRHH) */}
-            <Route path="configuracion/cargos" element={<Placeholder title="Cargos" />} />
-            <Route path="configuracion/direcciones" element={<Placeholder title="Direcciones" />} />
-            <Route path="configuracion/tipos-acciones" element={<Placeholder title="Tipos de Acciones" />} />
-            <Route path="configuracion/parametros" element={<Placeholder title="Parámetros" />} />
+            <Route path="configuracion/cargos" element={<Cargos />} />
+            <Route path="configuracion/direcciones" element={<Direcciones />} />
+            <Route path="configuracion/turnos" element={<Turnos />} />
+            <Route path="configuracion/tipos-acciones" element={<TiposAcciones />} />
+            <Route path="configuracion/sedes" element={<Sedes />} />
+            <Route path="configuracion/grupos-ocupacionales" element={<GruposOcupacionales />} />
+            <Route path="configuracion/parametros" element={<ParametrosRRHH />} />
 
             {/* MÓDULO NÓMINA */}
-            <Route path="nomina/empleados" element={<Placeholder title="Empleados" />} />
+            <Route path="nomina/empleados" element={<Empleados />} />
             
             {/* Transacciones de nomina */}
             <Route path="nomina/transacciones/abrir" element={<Placeholder title="Abrir nómina" />} />
@@ -85,11 +110,10 @@ const App = () => {
             <Route path="nomina/informes/volantes" element={<Placeholder title="Volantes de pago" />} />
             <Route path="nomina/informes/tesoreria" element={<Placeholder title="Generar reporte de tesorería" />} />
 
-            {/* Configuración (Nómina) */}
             <Route path="nomina/configuracion/tipos-transacciones" element={<Placeholder title="Tipos de transacciones" />} />
-            <Route path="nomina/configuracion/tipos-nominas" element={<Placeholder title="Tipos de nóminas" />} />
+            <Route path="nomina/configuracion/tipos-nominas" element={<TiposNominas />} />
             <Route path="nomina/configuracion/contabilizacion" element={<Placeholder title="Contabilización de nóminas" />} />
-            <Route path="nomina/configuracion/cargos" element={<Placeholder title="Cargos" />} />
+            <Route path="nomina/configuracion/cargos" element={<Cargos />} />
             <Route path="nomina/configuracion/isr" element={<Placeholder title="ISR" />} />
             <Route path="nomina/configuracion/ley8701" element={<Placeholder title="LEY 87-01" />} />
             <Route path="nomina/configuracion/periodos" element={<Placeholder title="Periodos de nóminas" />} />
@@ -126,6 +150,10 @@ const App = () => {
           <Route path="administracion/general/proposito-contable" element={<Propositos />} />
           <Route path="administracion/general/unidades-medidas" element={<UnidadesMedidas />} />
           <Route path="administracion/general/conversion-unidades" element={<ConversionUnidades />} />
+          <Route path="nomina/cargos" element={<Cargos />} />
+          
+          <Route path="recursos-humanos/solicitudes" element={<Solicitudes />} />
+          <Route path="recursos-humanos/designaciones" element={<Designaciones />} />
           
           </Route>
         </Routes>

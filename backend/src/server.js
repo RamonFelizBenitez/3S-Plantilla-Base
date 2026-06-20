@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const path = require('path');
 
 const authRoutes = require('./routes/authRoutes');
 const menuRoutes = require('./routes/menuRoutes');
@@ -18,12 +19,36 @@ const centroCostoRoutes = require('./routes/centroCostoRoutes');
 const propositoRoutes = require('./routes/propositoRoutes');
 const unidadMedidaRoutes = require('./routes/unidadMedidaRoutes');
 const conversionUnidadesRoutes = require('./routes/conversionUnidadesRoutes');
+const cargoRoutes = require('./routes/cargoRoutes');
+const solicitudRoutes = require('./routes/solicitudRoutes');
+const infoComplementariaRoutes = require('./routes/infoComplementariaRoutes');
+const dependienteRoutes = require('./routes/dependienteRoutes');
+const educacionRoutes = require('./routes/educacionRoutes');
+const idiomaRoutes = require('./routes/idiomaRoutes');
+const experienciaRoutes = require('./routes/experienciaRoutes');
+const referenciaRoutes = require('./routes/referenciaRoutes');
+const otrosRoutes = require('./routes/otrosRoutes');
+const grupoOcupacionalRoutes = require('./routes/grupoOcupacionalRoutes');
+const cedeRoutes = require('./routes/cedeRoutes');
+const tipoAccionRoutes = require('./routes/tipoAccionRoutes');
+const turnoRoutes = require('./routes/turnoRoutes');
+const direccionRoutes = require('./routes/direccionRoutes');
+const dependenciaRoutes = require('./routes/dependenciaRoutes');
+const dependenciaCargoRoutes = require('./routes/dependenciaCargoRoutes');
+const tipoNominaRoutes = require('./routes/tipoNominaRoutes');
+const designacionRoutes = require('./routes/designacionRoutes');
+const parametrosRoutes = require('./routes/parametrosRoutes');
+const empleadoRoutes = require('./routes/empleadoRoutes');
+const empleadoTiempoRoutes = require('./routes/empleadoTiempoRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+
+// Serve static uploads
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -42,6 +67,32 @@ app.use('/api/centro-costos', centroCostoRoutes);
 app.use('/api/propositos', propositoRoutes);
 app.use('/api/unidades-medida', unidadMedidaRoutes);
 app.use('/api/conversion-unidades', conversionUnidadesRoutes);
+app.use('/api/cargos', cargoRoutes);
+app.use('/api/solicitudes', solicitudRoutes);
+app.use('/api/info/parentescos', infoComplementariaRoutes.parentescosRouter);
+app.use('/api/info/niveles-academicos', infoComplementariaRoutes.nivelesAcademicosRouter);
+app.use('/api/info/titulos-academicos', infoComplementariaRoutes.titulosAcademicosRouter);
+app.use('/api/info/idiomas', infoComplementariaRoutes.idiomasRouter);
+app.use('/api/info/traducciones', infoComplementariaRoutes.traduccionesRouter);
+app.use('/api/info/actividades', infoComplementariaRoutes.actividadesRouter);
+app.use('/api/dependientes', dependienteRoutes);
+app.use('/api/educacion', educacionRoutes);
+app.use('/api/idiomas', idiomaRoutes);
+app.use('/api/experiencia', experienciaRoutes);
+app.use('/api/referencias', referenciaRoutes);
+app.use('/api/otros', otrosRoutes);
+app.use('/api/configuracion/grupos-ocupacionales', grupoOcupacionalRoutes);
+app.use('/api/configuracion/cedes', cedeRoutes);
+app.use('/api/configuracion/tipos-acciones', tipoAccionRoutes);
+app.use('/api/configuracion/turnos', turnoRoutes);
+app.use('/api/configuracion/direcciones', direccionRoutes);
+app.use('/api/configuracion/direcciones/:direccionId/dependencias', dependenciaRoutes);
+app.use('/api/configuracion/dependencias/:dependenciaId/cargos', dependenciaCargoRoutes);
+app.use('/api/configuracion/tipos-nominas', tipoNominaRoutes);
+app.use('/api/configuracion/parametros-rrhh', parametrosRoutes);
+app.use('/api/designaciones', designacionRoutes);
+app.use('/api/empleados', empleadoRoutes);
+app.use('/api/empleado-tiempo', empleadoTiempoRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -51,3 +102,4 @@ app.get('/api/health', (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+

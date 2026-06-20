@@ -16,10 +16,11 @@ exports.getUsuarios = async (req, res) => {
         let query = `
             SELECT 
                 u.UsuarioID, u.NombreUsuario, u.NombreCompleto, u.Correo, u.Activo, u.EsGlobal,
-                e.NombreEmpresa as Empresa,
+                STRING_AGG(e.NombreEmpresa, ', ') as Empresa,
                 STRING_AGG(p.Descripcion, ', ') as Perfiles
             FROM Usuarios u
-            LEFT JOIN Empresas e ON u.EmpresaID = e.EmpresaID
+            LEFT JOIN Usuarios_Empresas ue ON u.UsuarioID = ue.UsuarioID
+            LEFT JOIN Empresas e ON ue.EmpresaID = e.EmpresaID
             LEFT JOIN Usuarios_Perfiles up ON u.UsuarioID = up.UsuarioID
             LEFT JOIN Perfiles p ON up.PerfilID = p.PerfilID
             WHERE (u.NombreUsuario LIKE @search OR u.NombreCompleto LIKE @search OR u.Correo LIKE @search)
@@ -27,12 +28,12 @@ exports.getUsuarios = async (req, res) => {
 
         if (empresaId) {
             request.input('empresaId', sql.Int, empresaId);
-            query += ` AND u.EmpresaID = @empresaId `;
+            query += ` AND ue.EmpresaID = @empresaId `;
         }
 
         query += `
             GROUP BY 
-                u.UsuarioID, u.NombreUsuario, u.NombreCompleto, u.Correo, u.Activo, u.EsGlobal, e.NombreEmpresa
+                u.UsuarioID, u.NombreUsuario, u.NombreCompleto, u.Correo, u.Activo, u.EsGlobal
             ORDER BY u.NombreCompleto ASC
         `;
         
@@ -43,7 +44,7 @@ exports.getUsuarios = async (req, res) => {
         });
     } catch (err) {
         console.error('Error fetching usuarios:', err);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        res.status(500).json({ error: 'Error interno del servidor', details: err.message });
     }
 };
 
@@ -55,7 +56,7 @@ exports.getUsuarioById = async (req, res) => {
         const result = await pool.request()
             .input('id', sql.Int, id)
             .query(`
-                SELECT UsuarioID, EmpresaID, NombreUsuario, NombreCompleto, Correo, EsGlobal, Activo
+                SELECT UsuarioID, NombreUsuario, NombreCompleto, Correo, EsGlobal, Activo
                 FROM Usuarios WHERE UsuarioID = @id
             `);
 
@@ -208,7 +209,7 @@ exports.updateUsuario = async (req, res) => {
     } catch (err) {
         if (transaction) await transaction.rollback();
         console.error('Error updating usuario:', err);
-        res.status(500).json({ error: 'Error al actualizar usuario' });
+        res.status(500).json({ error: 'Error al actualizar usuario', details: err.message });
     }
 };
 

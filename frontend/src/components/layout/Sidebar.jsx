@@ -9,12 +9,12 @@ const mockMenuData = [
     nombre: 'menu.modules.hr',
     icono: 'Users',
     opciones: [
-      { nombre: 'menu.options.requests', ruta: '/solicitudes', icono: 'FileText', esCarpeta: false },
+      { nombre: 'menu.options.requests', ruta: '/recursos-humanos/solicitudes', icono: 'FileText', esCarpeta: false },
       { nombre: 'menu.options.staff', ruta: '/personal', icono: 'Users', esCarpeta: false },
       { 
         nombre: 'menu.options.actions', icono: 'RefreshCw', esCarpeta: true, 
         subOpciones: [
-          { nombre: 'menu.options.designation', ruta: '/designacion' },
+          { nombre: 'menu.options.designation', ruta: '/recursos-humanos/designaciones' },
           { nombre: 'menu.options.changes', ruta: '/cambios' },
           { nombre: 'menu.options.separation', ruta: '/separacion' },
           { nombre: 'menu.options.warnings', ruta: '/amonestaciones' },
@@ -31,11 +31,25 @@ const mockMenuData = [
         ]
       },
       { 
+        nombre: 'Información Complementaria', icono: 'Database', esCarpeta: true, 
+        subOpciones: [
+          { nombre: 'Parentesco', ruta: '/recursos-humanos/info/parentescos' },
+          { nombre: 'Nivel Académico', ruta: '/recursos-humanos/info/niveles-academicos' },
+          { nombre: 'Título Académico', ruta: '/recursos-humanos/info/titulos-academicos' },
+          { nombre: 'Idiomas', ruta: '/recursos-humanos/info/idiomas' },
+          { nombre: 'Niveles de Traducción', ruta: '/recursos-humanos/info/traducciones' },
+          { nombre: 'Actividades', ruta: '/recursos-humanos/info/actividades' }
+        ]
+      },
+      { 
         nombre: 'menu.options.settings', icono: 'Settings', esCarpeta: true, 
         subOpciones: [
-          { nombre: 'Cargos', ruta: '/configuracion/cargos' },
           { nombre: 'Direcciones', ruta: '/configuracion/direcciones' },
+          { nombre: 'Cargos', ruta: '/nomina/cargos' },
+          { nombre: 'Turnos', ruta: '/configuracion/turnos' },
           { nombre: 'Tipos de Acciones', ruta: '/configuracion/tipos-acciones' },
+          { nombre: 'Sedes', ruta: '/configuracion/sedes' },
+          { nombre: 'Grupo Ocupacional', ruta: '/configuracion/grupos-ocupacionales' },
           { nombre: 'Parámetros', ruta: '/configuracion/parametros' }
         ]
       }
@@ -88,7 +102,7 @@ const mockMenuData = [
           { nombre: 'Tipos de transacciones', ruta: '/nomina/configuracion/tipos-transacciones' },
           { nombre: 'Tipos de nóminas', ruta: '/nomina/configuracion/tipos-nominas' },
           { nombre: 'Contabilización de nóminas', ruta: '/nomina/configuracion/contabilizacion' },
-          { nombre: 'Cargos', ruta: '/nomina/configuracion/cargos' },
+          { nombre: 'Cargos', ruta: '/nomina/cargos' },
           { nombre: 'ISR', ruta: '/nomina/configuracion/isr' },
           { nombre: 'LEY 87-01', ruta: '/nomina/configuracion/ley8701' },
           { nombre: 'Periodos de nóminas', ruta: '/nomina/configuracion/periodos' },

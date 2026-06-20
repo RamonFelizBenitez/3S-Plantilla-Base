@@ -42,22 +42,31 @@ exports.update = async (req, res) => {
     try {
         const pool = await connectDB();
         const { idDesde, idHasta } = req.params;
-        const { Factor, CantidadSumar } = req.body;
+        const { UnidadIdDesde, UnidadIdHasta, Factor, CantidadSumar } = req.body;
         const empresaId = req.user?.empresaId || 1;
         const userId = req.user?.id || 1;
 
+        if (UnidadIdDesde === UnidadIdHasta) {
+            return res.status(400).json({ error: 'La unidad origen y destino no pueden ser la misma' });
+        }
+
         await pool.request()
-            .input('desde', sql.VarChar, idDesde)
-            .input('hasta', sql.VarChar, idHasta)
+            .input('oldDesde', sql.VarChar, idDesde)
+            .input('oldHasta', sql.VarChar, idHasta)
+            .input('newDesde', sql.VarChar, UnidadIdDesde)
+            .input('newHasta', sql.VarChar, UnidadIdHasta)
             .input('empresaId', sql.Int, empresaId)
             .input('factor', sql.Float, parseFloat(Factor) || 0)
             .input('sumar', sql.Float, parseFloat(CantidadSumar) || 0)
             .input('userId', sql.Int, userId)
             .query(`UPDATE UNIDADESCONVERSION 
-                    SET Factor = @factor, CantidadSumar = @sumar, ModificadoPor = @userId, FechaModificado = GETDATE()
-                    WHERE UnidadIdDesde = @desde AND UnidadIdHasta = @hasta AND EmpresaID = @empresaId`);
+                    SET UnidadIdDesde = @newDesde, UnidadIdHasta = @newHasta, Factor = @factor, CantidadSumar = @sumar, ModificadoPor = @userId, FechaModificado = GETDATE()
+                    WHERE UnidadIdDesde = @oldDesde AND UnidadIdHasta = @oldHasta AND EmpresaID = @empresaId`);
         res.json({ message: 'Conversión actualizada exitosamente' });
-    } catch (err) { res.status(500).json({ error: err.message }); }
+    } catch (err) { 
+        if (err.number === 2627) return res.status(400).json({ error: 'Ya existe una conversión para estas unidades' });
+        res.status(500).json({ error: err.message }); 
+    }
 };
 
 exports.deleteRecord = async (req, res) => {

@@ -20,13 +20,21 @@ const Usuarios = () => {
     NombreUsuario: '', NombreCompleto: '', Correo: '', Password: '', Empresas: [], EsGlobal: false, Activo: true
   });
   const [empresasList, setEmpresasList] = useState([]);
+  const [perfilesList, setPerfilesList] = useState([]);
 
-  const fetchEmpresas = async () => {
+  const fetchCatalogos = async () => {
     try {
-      const res = await fetch('/api/empresas');
-      if (res.ok) {
-        const json = await res.json();
+      const [resEmpresas, resPerfiles] = await Promise.all([
+          fetch('/api/empresas'),
+          fetch('/api/perfiles')
+      ]);
+      if (resEmpresas.ok) {
+        const json = await resEmpresas.json();
         setEmpresasList(json.data || []);
+      }
+      if (resPerfiles.ok) {
+        const json = await resPerfiles.json();
+        setPerfilesList(json.data || []);
       }
     } catch (err) {
       console.error(err);
@@ -52,16 +60,27 @@ const Usuarios = () => {
 
   useEffect(() => {
     fetchUsuarios();
-    fetchEmpresas();
+    fetchCatalogos();
   }, []);
 
-  const openModal = (record = null) => {
+  const openModal = async (record = null) => {
     if (record) {
       setEditingRecord(record);
-      setFormData({ ...record, Password: '', Empresas: record.Empresas || [] });
+      // Fetch full details of the user to get real arrays for Empresas and Perfiles
+      try {
+         const res = await fetch(`/api/usuarios/${record.UsuarioID}`);
+         if(res.ok) {
+             const userDetail = await res.json();
+             setFormData({ ...userDetail, Password: '' });
+         } else {
+             setFormData({ ...record, Password: '', Empresas: [], Perfiles: [] });
+         }
+      } catch(err) {
+         setFormData({ ...record, Password: '', Empresas: [], Perfiles: [] });
+      }
     } else {
       setEditingRecord(null);
-      setFormData({ NombreUsuario: '', NombreCompleto: '', Correo: '', Password: '', Empresas: [], EsGlobal: false, Activo: true });
+      setFormData({ NombreUsuario: '', NombreCompleto: '', Correo: '', Password: '', Empresas: [], Perfiles: [], EsGlobal: false, Activo: true });
     }
     setIsModalOpen(true);
   };
@@ -91,11 +110,22 @@ const Usuarios = () => {
 
   const handleEmpresaToggle = (empresaId) => {
     setFormData(prev => {
-      const isSelected = prev.Empresas.includes(empresaId);
+      const isSelected = prev.Empresas?.includes(empresaId);
       if (isSelected) {
         return { ...prev, Empresas: prev.Empresas.filter(id => id !== empresaId) };
       } else {
-        return { ...prev, Empresas: [...prev.Empresas, empresaId] };
+        return { ...prev, Empresas: [...(prev.Empresas || []), empresaId] };
+      }
+    });
+  };
+
+  const handlePerfilToggle = (perfilId) => {
+    setFormData(prev => {
+      const isSelected = prev.Perfiles?.includes(perfilId);
+      if (isSelected) {
+        return { ...prev, Perfiles: prev.Perfiles.filter(id => id !== perfilId) };
+      } else {
+        return { ...prev, Perfiles: [...(prev.Perfiles || []), perfilId] };
       }
     });
   };
@@ -160,21 +190,41 @@ const Usuarios = () => {
             <label style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}>Contraseña (Dejar en blanco para no cambiar)</label>
             <input type="password" name="Password" value={formData.Password || ''} onChange={handleChange} placeholder="******" style={inputStyle} />
           </div>
-          <div>
-            <label style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}>Empresas Asignadas *</label>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', border: '1px solid #cbd5e1', padding: '10px', borderRadius: '4px', maxHeight: '150px', overflowY: 'auto' }}>
-              {empresasList.map(emp => (
-                <label key={emp.EmpresaID} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                  <input 
-                    type="checkbox" 
-                    checked={formData.Empresas?.includes(emp.EmpresaID) || false}
-                    onChange={() => handleEmpresaToggle(emp.EmpresaID)}
-                  />
-                  {emp.NombreEmpresa}
-                </label>
-              ))}
-            </div>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}>Perfiles Asignados *</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', border: '1px solid #cbd5e1', padding: '10px', borderRadius: '4px', maxHeight: '150px', overflowY: 'auto' }}>
+                  {perfilesList.map(perf => (
+                    <label key={perf.PerfilID} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                      <input 
+                        type="checkbox" 
+                        checked={formData.Perfiles?.includes(perf.PerfilID) || false}
+                        onChange={() => handlePerfilToggle(perf.PerfilID)}
+                      />
+                      {perf.Descripcion}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 500 }}>Empresas Asignadas *</label>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', border: '1px solid #cbd5e1', padding: '10px', borderRadius: '4px', maxHeight: '150px', overflowY: 'auto' }}>
+                  {empresasList.map(emp => (
+                    <label key={emp.EmpresaID} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                      <input 
+                        type="checkbox" 
+                        checked={formData.Empresas?.includes(emp.EmpresaID) || false}
+                        onChange={() => handleEmpresaToggle(emp.EmpresaID)}
+                      />
+                      {emp.NombreEmpresa}
+                    </label>
+                  ))}
+                </div>
+              </div>
           </div>
+
           <div>
             <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500, cursor: 'pointer' }}>
               <input type="checkbox" name="Activo" checked={formData.Activo} onChange={handleChange} />

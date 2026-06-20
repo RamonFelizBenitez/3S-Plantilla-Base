@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { showToast, showConfirm } from '../../utils/alerts';
 import DataTable from '../../components/common/DataTable';
 import Modal from '../../components/common/Modal';
@@ -19,13 +20,14 @@ const ConversionUnidades = () => {
   const fetchData = async () => {
     try {
       const [convRes, uniRes] = await Promise.all([
-        fetch('/api/conversion-unidades').then(r => r.json()),
-        fetch('/api/unidades-medida').then(r => r.json())
+        axios.get('/api/conversion-unidades'),
+        axios.get('/api/unidades-medida')
       ]);
-      setData(convRes.data || []);
-      setUnidades(uniRes.data || []);
+      setData(convRes.data.data || []);
+      setUnidades(uniRes.data.data || []);
     } catch (err) {
       console.error("Error fetching data:", err);
+      showToast("Error cargando datos: " + (err.response?.data?.error || err.message));
     }
   };
 
@@ -55,13 +57,12 @@ const ConversionUnidades = () => {
   const handleDelete = async (record) => {
     if (!(await showConfirm(`¿Seguro que desea eliminar la conversión de ${record.UnidadIdDesde} a ${record.UnidadIdHasta}?`))) return;
     try {
-      const res = await fetch(`/api/conversion-unidades/${record.UnidadIdDesde}/${record.UnidadIdHasta}`, { method: 'DELETE' });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error);
-      showToast(json.message);
+      const url = `/api/conversion-unidades/${encodeURIComponent(record.UnidadIdDesde)}/${encodeURIComponent(record.UnidadIdHasta)}`;
+      const res = await axios.delete(url);
+      showToast(res.data.message);
       fetchData();
     } catch (err) {
-      showToast("Error: " + err.message);
+      showToast("Error: " + (err.response?.data?.error || err.message));
     }
   };
 
@@ -76,24 +77,18 @@ const ConversionUnidades = () => {
     }
     try {
       const url = currentRecord 
-        ? `/api/conversion-unidades/${currentRecord.UnidadIdDesde}/${currentRecord.UnidadIdHasta}` 
+        ? `/api/conversion-unidades/${encodeURIComponent(currentRecord.UnidadIdDesde)}/${encodeURIComponent(currentRecord.UnidadIdHasta)}` 
         : '/api/conversion-unidades';
-      const method = currentRecord ? 'PUT' : 'POST';
       
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+      const res = currentRecord 
+        ? await axios.put(url, formData)
+        : await axios.post(url, formData);
       
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error);
-      
-      showToast(json.message);
+      showToast(res.data.message);
       setIsModalOpen(false);
       fetchData();
     } catch (err) {
-      showToast("Error: " + err.message);
+      showToast("Error: " + (err.response?.data?.error || err.message));
     }
   };
 
@@ -132,7 +127,6 @@ const ConversionUnidades = () => {
                 value={formData.UnidadIdDesde} 
                 onChange={handleChange} 
                 style={inputStyle}
-                disabled={!!currentRecord}
               >
                 <option value="">-- Seleccionar Unidad --</option>
                 {unidades.map(u => <option key={u.UnidadId} value={u.UnidadId}>{u.UnidadId} - {u.Descripcion}</option>)}
@@ -145,7 +139,6 @@ const ConversionUnidades = () => {
                 value={formData.UnidadIdHasta} 
                 onChange={handleChange} 
                 style={inputStyle}
-                disabled={!!currentRecord}
               >
                 <option value="">-- Seleccionar Unidad --</option>
                 {unidades.map(u => <option key={u.UnidadId} value={u.UnidadId}>{u.UnidadId} - {u.Descripcion}</option>)}

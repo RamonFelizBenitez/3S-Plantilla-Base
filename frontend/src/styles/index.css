@@ -3525,7 +3525,7 @@ ul { list-style: none; }
   margin-bottom: 24px;
 }
 .btn-primary {
-  background: var(--clr-blue);
+  background: #2563eb;
   color: #fff;
   border: none;
   padding: 10px 16px;
@@ -3547,6 +3547,13 @@ ul { list-style: none; }
   overflow: hidden;
   border: 1px solid #edf2f7;
 }
+}
+
+/* Fix Toast Z-Index to appear above Modals */
+div.swal2-container {
+  z-index: 10000 !important;
+}
+
 .custom-table {
   width: 100%;
   border-collapse: collapse;

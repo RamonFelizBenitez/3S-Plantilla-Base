@@ -236,3 +236,36 @@ exports.deleteEmpresa = async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
+
+// Subir y guardar logo
+exports.uploadLogo = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'No se subió ningún archivo' });
+        }
+
+        const { id } = req.params;
+        const logoUrl = `/uploads/${req.file.filename}`;
+        
+        const pool = await connectDB();
+        
+        // Comprobar si existe EmpresaInfo
+        const checkRequest = pool.request().input('id', sql.Int, id);
+        const checkResult = await checkRequest.query(`SELECT EmpresaInfoID FROM EmpresaInfo WHERE EmpresaID = @id`);
+        
+        const updateRequest = pool.request()
+            .input('id', sql.Int, id)
+            .input('logo', sql.NVarChar, logoUrl);
+            
+        if (checkResult.recordset.length > 0) {
+            await updateRequest.query(`UPDATE EmpresaInfo SET Logo = @logo WHERE EmpresaID = @id`);
+        } else {
+            await updateRequest.query(`INSERT INTO EmpresaInfo (EmpresaID, Logo, CreadoPor) VALUES (@id, @logo, 1)`);
+        }
+        
+        res.json({ message: 'Logo subido exitosamente', logoUrl });
+    } catch (err) {
+        console.error('Error uploading logo:', err);
+        res.status(500).json({ error: 'Error al procesar el archivo' });
+    }
+};
