@@ -7,6 +7,7 @@ import { Eye, MoreVertical } from 'lucide-react';
 import ReconocimientoTiempoModal from './ReconocimientoTiempoModal';
 import ActualizarDatosEmpleadoModal from './ActualizarDatosEmpleadoModal';
 import ActualizarCuentaBancoModal from './ActualizarCuentaBancoModal';
+import ActualizarSalarioModal from './ActualizarSalarioModal';
 
 const BaseInputGroup = ({ label, children }) => (
   <div style={{ marginBottom: '12px' }}>
@@ -98,6 +99,9 @@ const Empleados = () => {
   
   const [isCuentaBancoModalOpen, setIsCuentaBancoModalOpen] = useState(false);
   const [cuentaBancoEmpleado, setCuentaBancoEmpleado] = useState(null);
+
+  const [isSalarioModalOpen, setIsSalarioModalOpen] = useState(false);
+  const [salarioEmpleado, setSalarioEmpleado] = useState(null);
   
   const [isTiempoModalOpen, setIsTiempoModalOpen] = useState(false);
   const [tiempoEmpleado, setTiempoEmpleado] = useState(null);
@@ -175,6 +179,9 @@ const Empleados = () => {
     } else if (action === 'Actualizar Cuenta Banco') {
       setCuentaBancoEmpleado(empleado);
       setIsCuentaBancoModalOpen(true);
+    } else if (action === 'Actualizar Salario') {
+      setSalarioEmpleado(empleado);
+      setIsSalarioModalOpen(true);
     } else {
       Swal.fire('Información', `Opción "${action}" en desarrollo`, 'info');
     }
@@ -417,6 +424,14 @@ const Empleados = () => {
         isOpen={isCuentaBancoModalOpen}
         onClose={() => setIsCuentaBancoModalOpen(false)}
         empleado={cuentaBancoEmpleado}
+        empresaId={empresaId}
+        onUpdateSuccess={fetchEmpleados}
+      />
+
+      <ActualizarSalarioModal
+        isOpen={isSalarioModalOpen}
+        onClose={() => setIsSalarioModalOpen(false)}
+        empleado={salarioEmpleado}
         empresaId={empresaId}
         onUpdateSuccess={fetchEmpleados}
       />
