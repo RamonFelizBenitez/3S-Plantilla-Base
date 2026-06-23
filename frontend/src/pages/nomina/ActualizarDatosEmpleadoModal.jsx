@@ -44,7 +44,7 @@ const ActualizarDatosEmpleadoModal = ({ isOpen, onClose, empleado, empresaId, on
       setAfp(empleado.AFP || false);
       setArs(empleado.ARS || false);
       setEnCarrera(empleado.EnCarrera || false);
-      setEstatus(empleado.Estatus !== undefined ? empleado.Estatus : 1);
+      setEstatus(empleado.Estatus !== undefined ? empleado.Estatus : 0);
       setTipoNominaId(empleado.TipoNominaID || '');
       setDireccionId(empleado.DireccionID || '');
       setDependenciaId(empleado.DependenciaID || '');
@@ -155,13 +155,10 @@ const ActualizarDatosEmpleadoModal = ({ isOpen, onClose, empleado, empresaId, on
               style={{ width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '4px' }}
             >
               <option value={0}>Activo</option>
-              <option value={1}>Vacaciones</option>
-              <option value={2}>Licencia</option>
-              <option value={3}>Permiso</option>
-              <option value={4}>Inactivo</option>
-              <option value={5}>Suspendido</option>
-              <option value={6}>Despedido</option>
-              <option value={7}>Renuncia</option>
+              <option value={1}>Inactivo</option>
+              <option value={2}>Licencia con Disfrute</option>
+              <option value={3}>Licencia Sin Disfrute</option>
+              <option value={4}>Baja</option>
             </select>
           </BaseInputGroup>
 

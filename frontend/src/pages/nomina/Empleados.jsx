@@ -6,6 +6,7 @@ import Modal from '../../components/common/Modal';
 import { Eye, MoreVertical } from 'lucide-react';
 import ReconocimientoTiempoModal from './ReconocimientoTiempoModal';
 import ActualizarDatosEmpleadoModal from './ActualizarDatosEmpleadoModal';
+import ActualizarCuentaBancoModal from './ActualizarCuentaBancoModal';
 
 const BaseInputGroup = ({ label, children }) => (
   <div style={{ marginBottom: '12px' }}>
@@ -95,6 +96,9 @@ const Empleados = () => {
   const [isActualizarDatosModalOpen, setIsActualizarDatosModalOpen] = useState(false);
   const [actualizarEmpleado, setActualizarEmpleado] = useState(null);
   
+  const [isCuentaBancoModalOpen, setIsCuentaBancoModalOpen] = useState(false);
+  const [cuentaBancoEmpleado, setCuentaBancoEmpleado] = useState(null);
+  
   const [isTiempoModalOpen, setIsTiempoModalOpen] = useState(false);
   const [tiempoEmpleado, setTiempoEmpleado] = useState(null);
 
@@ -168,6 +172,9 @@ const Empleados = () => {
     } else if (action === 'Actualizar datos empleados') {
       setActualizarEmpleado(empleado);
       setIsActualizarDatosModalOpen(true);
+    } else if (action === 'Actualizar Cuenta Banco') {
+      setCuentaBancoEmpleado(empleado);
+      setIsCuentaBancoModalOpen(true);
     } else {
       Swal.fire('Información', `Opción "${action}" en desarrollo`, 'info');
     }
@@ -177,8 +184,8 @@ const Empleados = () => {
     switch (estatus) {
       case 0: return 'Activo';
       case 1: return 'Inactivo';
-      case 2:
-      case 3: return 'Licencia';
+      case 2: return 'Licencia con Disfrute';
+      case 3: return 'Licencia Sin Disfrute';
       case 4: return 'Baja';
       default: return '';
     }
@@ -402,6 +409,14 @@ const Empleados = () => {
         isOpen={isActualizarDatosModalOpen}
         onClose={() => setIsActualizarDatosModalOpen(false)}
         empleado={actualizarEmpleado}
+        empresaId={empresaId}
+        onUpdateSuccess={fetchEmpleados}
+      />
+
+      <ActualizarCuentaBancoModal
+        isOpen={isCuentaBancoModalOpen}
+        onClose={() => setIsCuentaBancoModalOpen(false)}
+        empleado={cuentaBancoEmpleado}
         empresaId={empresaId}
         onUpdateSuccess={fetchEmpleados}
       />

@@ -40,6 +40,7 @@ const designacionRoutes = require('./routes/designacionRoutes');
 const parametrosRoutes = require('./routes/parametrosRoutes');
 const empleadoRoutes = require('./routes/empleadoRoutes');
 const empleadoTiempoRoutes = require('./routes/empleadoTiempoRoutes');
+const actualizaBancoRoutes = require('./routes/actualizaBancoRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -93,6 +94,7 @@ app.use('/api/configuracion/parametros-rrhh', parametrosRoutes);
 app.use('/api/designaciones', designacionRoutes);
 app.use('/api/empleados', empleadoRoutes);
 app.use('/api/empleado-tiempo', empleadoTiempoRoutes);
+app.use('/api/actualiza-banco', actualizaBancoRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
