@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import DataTable from '../../components/common/DataTable';
 import Modal from '../../components/common/Modal';
-import Swal from 'sweetalert2';
 import { Eye, MoreVertical } from 'lucide-react';
 import ReconocimientoTiempoModal from './ReconocimientoTiempoModal';
+import ActualizarDatosEmpleadoModal from './ActualizarDatosEmpleadoModal';
 
 const BaseInputGroup = ({ label, children }) => (
   <div style={{ marginBottom: '12px' }}>
@@ -91,6 +92,9 @@ const Empleados = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEmpleado, setSelectedEmpleado] = useState(null);
   
+  const [isActualizarDatosModalOpen, setIsActualizarDatosModalOpen] = useState(false);
+  const [actualizarEmpleado, setActualizarEmpleado] = useState(null);
+  
   const [isTiempoModalOpen, setIsTiempoModalOpen] = useState(false);
   const [tiempoEmpleado, setTiempoEmpleado] = useState(null);
 
@@ -161,6 +165,9 @@ const Empleados = () => {
     if (action === 'Reconocimiento de Tiempo') {
       setTiempoEmpleado(empleado);
       setIsTiempoModalOpen(true);
+    } else if (action === 'Actualizar datos empleados') {
+      setActualizarEmpleado(empleado);
+      setIsActualizarDatosModalOpen(true);
     } else {
       Swal.fire('Información', `Opción "${action}" en desarrollo`, 'info');
     }
@@ -389,6 +396,14 @@ const Empleados = () => {
         onClose={() => setIsTiempoModalOpen(false)}
         empleado={tiempoEmpleado}
         empresaId={empresaId}
+      />
+
+      <ActualizarDatosEmpleadoModal
+        isOpen={isActualizarDatosModalOpen}
+        onClose={() => setIsActualizarDatosModalOpen(false)}
+        empleado={actualizarEmpleado}
+        empresaId={empresaId}
+        onUpdateSuccess={fetchEmpleados}
       />
     </div>
   );

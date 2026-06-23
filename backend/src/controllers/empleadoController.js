@@ -111,3 +111,49 @@ exports.getAcciones = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+exports.updateDatosEmpleado = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { empresaId } = req.query;
+    const { Nomina, ISR, AFP, ARS, EnCarrera, Estatus, TipoNominaID, DireccionID, DependenciaID, FormaPago } = req.body;
+
+    if (!empresaId) return res.status(400).json({ message: 'EmpresaID es requerido' });
+
+    const pool = await connectDB();
+    await pool.request()
+      .input('empresaId', sql.Int, empresaId)
+      .input('empleadoId', sql.VarChar, id)
+      .input('nomina', sql.Bit, Nomina ? 1 : 0)
+      .input('isr', sql.Bit, ISR ? 1 : 0)
+      .input('afp', sql.Bit, AFP ? 1 : 0)
+      .input('ars', sql.Bit, ARS ? 1 : 0)
+      .input('enCarrera', sql.Bit, EnCarrera ? 1 : 0)
+      .input('estatus', sql.Int, Estatus)
+      .input('tipoNominaId', sql.VarChar, TipoNominaID || null)
+      .input('direccionId', sql.VarChar, DireccionID || null)
+      .input('dependenciaId', sql.VarChar, DependenciaID || null)
+      .input('formaPago', sql.Int, FormaPago)
+      .query(`
+        UPDATE NMEMPLEADOS
+        SET 
+          Nomina = @nomina,
+          ISR = @isr,
+          AFP = @afp,
+          ARS = @ars,
+          EnCarrera = @enCarrera,
+          Estatus = @estatus,
+          TipoNominaID = @tipoNominaId,
+          DireccionID = @direccionId,
+          DependenciaID = @dependenciaId,
+          FormaPago = @formaPago,
+          FechaModificado = GETDATE()
+        WHERE EmpresaID = @empresaId AND EmpleadoID = @empleadoId
+      `);
+      
+    res.json({ message: 'Datos actualizados correctamente' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+};

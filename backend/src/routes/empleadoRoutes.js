@@ -5,5 +5,6 @@ const empleadoController = require('../controllers/empleadoController');
 router.get('/', empleadoController.getEmpleados);
 router.get('/:id/salario', empleadoController.getSalarioMensual);
 router.get('/:id/acciones', empleadoController.getAcciones);
+router.put('/:id/datos-nomina', empleadoController.updateDatosEmpleado);
 
 module.exports = router;
