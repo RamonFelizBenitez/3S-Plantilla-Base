@@ -43,6 +43,7 @@ const empleadoTiempoRoutes = require('./routes/empleadoTiempoRoutes');
 const actualizaBancoRoutes = require('./routes/actualizaBancoRoutes');
 const actualizaSalarioRoutes = require('./routes/actualizaSalarioRoutes');
 const empleadoNominaRoutes = require('./routes/empleadoNominaRoutes');
+const tipoTransaccionRoutes = require('./routes/tipoTransaccionRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -99,6 +100,7 @@ app.use('/api/empleado-tiempo', empleadoTiempoRoutes);
 app.use('/api/actualiza-banco', actualizaBancoRoutes);
 app.use('/api/actualiza-salario', actualizaSalarioRoutes);
 app.use('/api/empleado-nomina', empleadoNominaRoutes);
+app.use('/api/tipos-transacciones', tipoTransaccionRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

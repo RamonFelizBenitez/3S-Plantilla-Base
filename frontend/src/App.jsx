@@ -14,6 +14,8 @@ import Paises from './pages/administracion/Paises';
 import Ciudades from './pages/administracion/Ciudades';
 import Municipios from './pages/administracion/Municipios';
 import Secuencias from './pages/administracion/Secuencias';
+import PeriodosNominas from './pages/nomina/configuracion/PeriodosNominas';
+import TiposTransacciones from './pages/nomina/configuracion/TiposTransacciones';
 import PeriodosContables from './pages/administracion/PeriodosContables';
 import CatalogoCuentas from './pages/administracion/CatalogoCuentas';
 import Monedas from './pages/administracion/Monedas';
@@ -110,7 +112,7 @@ const App = () => {
             <Route path="nomina/informes/volantes" element={<Placeholder title="Volantes de pago" />} />
             <Route path="nomina/informes/tesoreria" element={<Placeholder title="Generar reporte de tesorería" />} />
 
-            <Route path="nomina/configuracion/tipos-transacciones" element={<Placeholder title="Tipos de transacciones" />} />
+            <Route path="nomina/configuracion/tipos-transacciones" element={<TiposTransacciones />} />
             <Route path="nomina/configuracion/tipos-nominas" element={<TiposNominas />} />
             <Route path="nomina/configuracion/contabilizacion" element={<Placeholder title="Contabilización de nóminas" />} />
             <Route path="nomina/configuracion/cargos" element={<Cargos />} />
