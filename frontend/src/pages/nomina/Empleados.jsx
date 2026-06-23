@@ -8,6 +8,7 @@ import ReconocimientoTiempoModal from './ReconocimientoTiempoModal';
 import ActualizarDatosEmpleadoModal from './ActualizarDatosEmpleadoModal';
 import ActualizarCuentaBancoModal from './ActualizarCuentaBancoModal';
 import ActualizarSalarioModal from './ActualizarSalarioModal';
+import TiposNominasEmpleadoModal from './TiposNominasEmpleadoModal';
 
 const BaseInputGroup = ({ label, children }) => (
   <div style={{ marginBottom: '12px' }}>
@@ -102,6 +103,9 @@ const Empleados = () => {
 
   const [isSalarioModalOpen, setIsSalarioModalOpen] = useState(false);
   const [salarioEmpleado, setSalarioEmpleado] = useState(null);
+
+  const [isTiposNominasModalOpen, setIsTiposNominasModalOpen] = useState(false);
+  const [tiposNominasEmpleado, setTiposNominasEmpleado] = useState(null);
   
   const [isTiempoModalOpen, setIsTiempoModalOpen] = useState(false);
   const [tiempoEmpleado, setTiempoEmpleado] = useState(null);
@@ -182,6 +186,9 @@ const Empleados = () => {
     } else if (action === 'Actualizar Salario') {
       setSalarioEmpleado(empleado);
       setIsSalarioModalOpen(true);
+    } else if (action === 'Tipos de Nominas') {
+      setTiposNominasEmpleado(empleado);
+      setIsTiposNominasModalOpen(true);
     } else {
       Swal.fire('Información', `Opción "${action}" en desarrollo`, 'info');
     }
@@ -434,6 +441,13 @@ const Empleados = () => {
         empleado={salarioEmpleado}
         empresaId={empresaId}
         onUpdateSuccess={fetchEmpleados}
+      />
+
+      <TiposNominasEmpleadoModal
+        isOpen={isTiposNominasModalOpen}
+        onClose={() => setIsTiposNominasModalOpen(false)}
+        empleado={tiposNominasEmpleado}
+        empresaId={empresaId}
       />
     </div>
   );
