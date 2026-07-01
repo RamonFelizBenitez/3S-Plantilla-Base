@@ -50,6 +50,7 @@ const mockMenuData = [
           { nombre: 'Tipos de Acciones', ruta: '/configuracion/tipos-acciones' },
           { nombre: 'Sedes', ruta: '/configuracion/sedes' },
           { nombre: 'Grupo Ocupacional', ruta: '/configuracion/grupos-ocupacionales' },
+          { nombre: 'Clasificación', ruta: '/configuracion/clasificaciones' },
           { nombre: 'Parámetros', ruta: '/configuracion/parametros' }
         ]
       }

@@ -1,0 +1,112 @@
+//Validar Periodos contable
+Paso 1. El sistema validara que en la tabla MGPERIODOS, existe creado el perido con el que se esta trabajando la quincena, el mes, la semana etc. y que ese periodo no este detenido ni cerrado en caso contrario devolver proceso e informar al usuario.  Si el proceso de nomina comienza por ejemplo en mayo, el sistema va a validar que los periodos de nominas anteriores a mayo esten cerrado en caso contrario deterner proceso e informar. Realicemos el paso validar periodo contable y me informa como que al darle a procesar y si fue documentado y luego continuamos
+
+
+//Validar nomina abierta
+Paso 1.1 el sistema determinara que la nomina a procesar esta abierta, si esta abierta debes borrar de las tablas  NMNOMINALINEAS y NMSUELDOEMPLEADO de la numina a procesar para volver a hacer el calculo en base a las nuevas informaciones. 
+
+// Validar transaccion de salario, AFP y ARS
+Validar que en la tabla NMTIPOSTRANSACCIONES Existe una transaccion marcada como Salario, una com AFP, una como ARS, una como Dependiente
+
+// Leer PArametros
+Paso 2. El Sistema de tener en memoria los parametros de la table NMAFPARS para fines de calculos
+
+Paso 3. Como vamos a procesar nomina, el Sistema debe tener en memoria los datos de la table NMTIPOSNOMINA, NMPERIODOSNOMINA, Para fines del insert 
+
+// Seleccionar los empleados a procesar
+Paso Numero 4. El sistema debe seleccionar el catalogo de empleados perteneciente al tiponominaid a procesar.  los empleados deben estar en estatus Activo, El compo Nomina de ser true y el tipo de nomina debe existir en NMEMPLEADOSNOM.
+
+// Leer Salario
+Paso 5. Empezamos a recorrer la table NMEMPLEADOS
+ Durante el recorrido, obtenemos el salario de la table RHPERCEP, que el campo sueldo active este en true y que la fecha fin sea superior a la fecha a procesar.
+
+Paso 6. Si la fechaIngreso del empleado es mayor a la fecha inicio de la semana, quincena o mes, se debe divider el salario par el pago de la proporcion de dias correspondiente.
+
+// Validar Dependiente
+paso 7. Creemos la siguiente validacion, revisar si algun empleado tiene dependiente activo, es decir el campo Cobrar = 1 de la tabla NMDEPENDIENTE, si existe, validar que en la tabla NMTIPOSNOMINAS el campo MontoDependiente tiene valor, si hay empleados con dependientes y este campo no tiene valor debe avisar y detener el proceso 
+
+
+Ok hasta aqui los pasos
+Ahora comenzamos con los procesos, 
+
+// insertar salario
+Proceso 1.
+Con la data disponible de las tablas que hemos mensionado para este proceso lo primero es inserter en la table NMSUELDOEMPLEADO el salario del empleado encontrado en RHPERCEP del empleado
+
+// Insertar Dependientes
+Proceso 2.  revisar la table NMDEPENDIENTES, si la table tiene un dependiente asignado que este active es decir el campo Cobrar = 1, seleccionarlo y hacer un insertar en la table NMNOMINALINEAS con los datos correspondientes a cada campo. El monto de esta transaccion esta en el campo MontoDependiente de la table NMTIPOSNOMINAS Y la transaccionID esta en la tabla NMDEPENDIENTES. Los demas campos leerlos segun corresponde.
+
+NOTA: Para esta transaccion revisar el campo PeriodoDependiente en la tabla NMTIPOSNOMINA, si es 1 ejecutar siempre y divider el valor entre 2, si es 2 ejecutar solo en primera quincena el valor completo y si es 3 ejecutar en la segunda quincena el valor completo
+
+// insertar salario
+Proceso 3. Seleccionar de la tabla NMTIPOSTRANSACCIONES EL CAMPO MARCADO COMO SALARIO el CAMPO TransaccionID e insertarlo en la tabla NMNOMINALINEAS con el Salario del empleado sus respetivos campos como corresponede, tOMAR EL CAMPO SALARIO de RHPERCEP como valor para monto.
+tomar en cuenta esta regla: Si el tipo de nomina es quincenal, el salario Debera ser divide en 2 y si es mensual el pago es unico
+
+
+// insertar transacciones fijas, Ocacionales y recurrentes
+Proceso 4. Ahora vamos a revisar la tabla NMTRANSACCIONES mediante el  codigo del empleados el campo TipoNovedad, cuando el valor es = 0, son transacciones fijas, esto significa que siempre Debera ser procesa, se toma el campo Abono y El campo TipoTransID y se  insert a la tabla nmnominalineas segun suscampos por cada uno de los registros encontrados.
+
+Cuando el campo TipoNovedad su valor es = 1, es ocacional y se debe tomar en cuanta la fecha y el campo interval, si el valor es = 0, descontar descontar siempre, 1 = solo en primera quincena 2, solo en tercera quincena
+
+Cuando el campo TipoNovedad su valor es = 2, es recurrente y se debe tomar en cuanta solo el campo interval, si el valor es = 0, descontar descontar siempre, 1 = solo en primera quincena 2, solo en tercera quincena
+
+Nota: las transacciones marcadas con ISR, AFP,ARS Y Dependiente, NO APLICAN, estan excetuadas para fijas ocacionales  y recurrentes
+
+
+// insertar AFP
+
+Proceso 5. Si la tabla NMEMPLEADO el campo AFP = 1, tomar de la tabla NMAFPARS el valor del campo AportePension, dividirlo entre 100 y mutiplicarlo por el salario del empleado. Si el resultado es mayor que el valor de este campo TOPEAFP de la tabla NMAFPARS, Entonces el valor a tomar en cuenta para insertar debe ser el de este campo TOPEAFP en caso contrario el resultado de la multiplicacion. 
+
+revisar la tabla NMTIPOSNOMINAS el campo CalcularAFP si es = 1 entonces tomar el campo PeriodoAFP si es igual a 0, descontar todo siempre, en caso contrario divider entre 2 segun la quincena seleccionada
+
+Ahora Tomar de la tabla NMTIPSTRANSACCION el campo tipotransid marcada como AFP mas el valor anterior resultante y hacer un insert en la tabla NMNOMINALINEAS con sus respectivos campos.   
+ 
+
+// insertar ARS
+Proceso 6. Si la tabla NMEMPLEADO el campo ARS = 1, tomar de la tabla NMAFPARS el valor del campo AporteSalud, dividirlo entre 100 y mutiplicarlo por el salario del empleado. Si el resultado es mayor que el valor de este campo TOPEARS de la tabla NMAFPARS, Entonces el valor a tomar en cuenta para insertar debe ser el de este campo TOPEARS en caso contrario el resultado de la multiplicacion. 
+
+revisar la tabla NMTIPOSNOMINAS el campo CalcularARS si es = 1 entonces tomar el campo PeriodoAFP si es igual a 0, descontar todo siempre, en caso contrario divider entre 2 segun la quincena seleccionada
+
+Ahora Tomar de la tabla NMTIPSTRANSACCION el campo tipotransid marcada como AFP mas el valor anterior resultante y hacer un insert en la tabla NMNOMINALINEAS con sus respectivos campos.   
+
+// insertar ISR
+proceso 7. Ahora es momento de trabajar con el ISR,  Esta es la forma de yo consultar el impuesto a procesar segun republica dominicana cuyos parametros estan guardados en la tabla NMISR, antes de iniciar el calculo para ISR, Es necesario tomar en cuanta el valor completo de AFP sin division y el de ARS, Tabien es necesario tomar en cuenta el valor de los dependientes sin division, estos valores se suman y se les restan al salario
+
+Por otra parte es necesario buscar en la table NMTIPOSTRANSACCIONES las transacciones marcadas con la conlumna EsIncentivo = 1, todos estos valores los debemos sumar al salario del empleado para fines de calculo de impuesto sobre la renta
+
+Esta es la forma como consulto mi table para fines de calculo de impuesto
+DECLARE @SalarioAnual DECIMAL(18,2) = 720000;
+DECLARE @Ano INT = 2026;
+
+SELECT TOP 1
+       SueldoInicial,
+       SueldoFinal,
+       Base,
+       Valor
+FROM NMISR
+WHERE YEAR(FechaInicial) = @Ano
+  AND @SalarioAnual >= SueldoInicial
+  AND (
+        SueldoFinal IS NULL
+        OR @SalarioAnual <= SueldoFinal
+      );
+
+Y este es un aproximado del calculo, DECLARE @SalarioAnual DECIMAL(18,2) = 720000;
+DECLARE @Ano INT = 2026;
+
+SELECT
+    @SalarioAnual AS SalarioAnual,
+    Base,
+    Valor,
+    Base + ((@SalarioAnual - SueldoInicial) * (Valor / 100.00)) AS ISRAnual,
+    (Base + ((@SalarioAnual - SueldoInicial) * (Valor / 100.00))) / 12 AS ISRMensual
+FROM ISR
+WHERE YEAR(FechaInicial) = @Ano
+  AND @SalarioAnual >= SueldoInicial
+  AND (
+        SueldoFinal IS NULL
+        OR @SalarioAnual <= SueldoFinal
+      );
+
+Espero revise y coloque la major version functional para la obtencion del calculo de ISR de republica dominicana
+

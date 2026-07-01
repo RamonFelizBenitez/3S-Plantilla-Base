@@ -9,6 +9,8 @@ import ActualizarDatosEmpleadoModal from './ActualizarDatosEmpleadoModal';
 import ActualizarCuentaBancoModal from './ActualizarCuentaBancoModal';
 import ActualizarSalarioModal from './ActualizarSalarioModal';
 import TiposNominasEmpleadoModal from './TiposNominasEmpleadoModal';
+import EmpleadoDependientesModal from './EmpleadoDependientesModal';
+import EmpleadoTransaccionesModal from './EmpleadoTransaccionesModal';
 
 const BaseInputGroup = ({ label, children }) => (
   <div style={{ marginBottom: '12px' }}>
@@ -18,6 +20,16 @@ const BaseInputGroup = ({ label, children }) => (
     {children}
   </div>
 );
+
+const formatDateStr = (dateString) => {
+  if (!dateString) return '';
+  try {
+    const [year, month, day] = dateString.split('T')[0].split('-');
+    return `${day}/${month}/${year}`;
+  } catch (e) {
+    return new Date(dateString).toLocaleDateString();
+  }
+};
 
 const ActionMenu = ({ empleado, onActionClick }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,25 +75,28 @@ const ActionMenu = ({ empleado, onActionClick }) => {
             zIndex: 9999, minWidth: '220px', padding: '4px 0' 
           }}
         >
-          {['Actualizar datos empleados', 'Actualizar Cuenta Banco', 'Actualizar Salario', 'Tipos de Nominas', 'Dependientes', 'Reconocimiento de Tiempo'].map((opt, i) => (
-            <button 
-              key={i}
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsOpen(false);
-                onActionClick(opt, empleado);
-              }}
-              style={{ 
-                display: 'block', width: '100%', textAlign: 'left', 
-                padding: '8px 16px', background: 'none', border: 'none', 
-                cursor: 'pointer', fontSize: '13px', color: '#334155' 
-              }}
-              onMouseEnter={(e) => e.target.style.background = '#f1f5f9'}
-              onMouseLeave={(e) => e.target.style.background = 'none'}
-            >
-              {opt}
-            </button>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+          {['Actualizar datos empleados', 'Actualizar Cuenta Banco', 'Actualizar Salario', 'Tipos de Nominas', 'Dependientes', 'Transacciones de Empleados', 'Reconocimiento de Tiempo'].map((opt, i) => (
+            <li key={i} style={{ borderBottom: i < 6 ? '1px solid #e2e8f0' : 'none' }}>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsOpen(false);
+                  onActionClick(opt, empleado);
+                }}
+                style={{ 
+                  display: 'block', width: '100%', textAlign: 'left', 
+                  padding: '8px 16px', background: 'none', border: 'none', 
+                  cursor: 'pointer', fontSize: '13px', color: '#334155' 
+                }}
+                onMouseEnter={(e) => e.target.style.background = '#f1f5f9'}
+                onMouseLeave={(e) => e.target.style.background = 'none'}
+              >
+                {opt}
+              </button>
+            </li>
           ))}
+          </ul>
         </div>
       )}
     </>
@@ -106,6 +121,14 @@ const Empleados = () => {
 
   const [isTiposNominasModalOpen, setIsTiposNominasModalOpen] = useState(false);
   const [tiposNominasEmpleado, setTiposNominasEmpleado] = useState(null);
+
+  // Modal de Transacciones
+  const [isTransaccionesModalOpen, setIsTransaccionesModalOpen] = useState(false);
+  const [transaccionesEmpleado, setTransaccionesEmpleado] = useState(null);
+
+  // Modal de Dependientes
+  const [isDependientesModalOpen, setIsDependientesModalOpen] = useState(false);
+  const [dependientesEmpleado, setDependientesEmpleado] = useState(null);
   
   const [isTiempoModalOpen, setIsTiempoModalOpen] = useState(false);
   const [tiempoEmpleado, setTiempoEmpleado] = useState(null);
@@ -115,6 +138,15 @@ const Empleados = () => {
   const [loadingSalarios, setLoadingSalarios] = useState(false);
   const [acciones, setAcciones] = useState([]);
   const [loadingAcciones, setLoadingAcciones] = useState(false);
+
+  const currentYear = new Date().getFullYear();
+  const [pagos, setPagos] = useState([]);
+  const [loadingPagos, setLoadingPagos] = useState(false);
+  const [periodoPagos, setPeriodoPagos] = useState(currentYear);
+
+  const [isPagoDetalleModalOpen, setIsPagoDetalleModalOpen] = useState(false);
+  const [pagoDetalleLineas, setPagoDetalleLineas] = useState([]);
+  const [loadingPagoDetalle, setLoadingPagoDetalle] = useState(false);
 
   useEffect(() => {
     if (activeTab === 3 && selectedEmpleado) {
@@ -150,6 +182,37 @@ const Empleados = () => {
     }
   }, [activeTab, selectedEmpleado, empresaId]);
 
+  useEffect(() => {
+    if (activeTab === 5 && selectedEmpleado) {
+      const fetchPagos = async () => {
+        try {
+          setLoadingPagos(true);
+          const res = await axios.get(`/api/empleados/${selectedEmpleado.EmpleadoID}/pagos?empresaId=${empresaId}&periodo=${periodoPagos}`);
+          setPagos(res.data);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoadingPagos(false);
+        }
+      };
+      fetchPagos();
+    }
+  }, [activeTab, selectedEmpleado, empresaId, periodoPagos]);
+
+  const handleVerDetallePago = async (pago) => {
+    try {
+      setLoadingPagoDetalle(true);
+      setIsPagoDetalleModalOpen(true);
+      const res = await axios.get(`/api/empleados/${selectedEmpleado.EmpleadoID}/pagos/detalle?empresaId=${empresaId}&codigoPeriodo=${pago.CodigoPeriodo}&nominaNumero=${pago.Secuencia}&secuencia=${pago.Secuencia}&tipoNominaId=${pago.TipoNominaID}`);
+      setPagoDetalleLineas(res.data);
+    } catch (err) {
+      console.error(err);
+      Swal.fire('Error', 'No se pudo cargar el detalle del pago', 'error');
+    } finally {
+      setLoadingPagoDetalle(false);
+    }
+  };
+
   const fetchEmpleados = async () => {
     try {
       setLoading(true);
@@ -166,6 +229,15 @@ const Empleados = () => {
   useEffect(() => {
     fetchEmpleados();
   }, [empresaId]);
+
+  useEffect(() => {
+    if (selectedEmpleado) {
+      const updated = empleados.find(e => e.EmpleadoID === selectedEmpleado.EmpleadoID);
+      if (updated) {
+        setSelectedEmpleado(updated);
+      }
+    }
+  }, [empleados]);
 
   const handleConsultar = (empleado) => {
     setSelectedEmpleado(empleado);
@@ -189,6 +261,12 @@ const Empleados = () => {
     } else if (action === 'Tipos de Nominas') {
       setTiposNominasEmpleado(empleado);
       setIsTiposNominasModalOpen(true);
+    } else if (action === 'Dependientes') {
+      setDependientesEmpleado(empleado);
+      setIsDependientesModalOpen(true);
+    } else if (action === 'Transacciones de Empleados') {
+      setTransaccionesEmpleado(empleado);
+      setIsTransaccionesModalOpen(true);
     } else {
       Swal.fire('Información', `Opción "${action}" en desarrollo`, 'info');
     }
@@ -238,7 +316,7 @@ const Empleados = () => {
         hideFooter={true}
       >
         <div style={{ display: 'flex', borderBottom: '1px solid #e2e8f0', marginBottom: '20px' }}>
-          {['Información General', 'Datos de Nómina', 'Salario Mensual', 'Acciones'].map((tab, idx) => (
+          {['Información General', 'Datos de Nómina', 'Salario Mensual', 'Acciones', 'Pagos'].map((tab, idx) => (
             <button
               key={idx}
               type="button"
@@ -259,7 +337,6 @@ const Empleados = () => {
         <div style={{ minHeight: '65vh', maxHeight: '65vh', overflowY: 'auto', paddingRight: '10px', position: 'relative' }}>
           {selectedEmpleado && activeTab === 1 && (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', padding: '10px' }}>
-              {/* SECCIÓN 1: DATOS PERSONALES */}
               <div>
                 <h4 style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '8px', marginBottom: '15px', color: '#334155' }}>Datos Personales</h4>
               
@@ -298,7 +375,6 @@ const Empleados = () => {
               </BaseInputGroup>
             </div>
 
-            {/* SECCIÓN 2: DATOS ORGANIZATIVOS */}
             <div>
               <h4 style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '8px', marginBottom: '15px', color: '#334155' }}>Datos Organizativos</h4>
               
@@ -343,11 +419,11 @@ const Empleados = () => {
               <h4 style={{ borderBottom: '1px solid #e2e8f0', paddingBottom: '8px', marginBottom: '15px', color: '#334155' }}>Información de Pago y Fechas</h4>
 
               <BaseInputGroup label="Fecha de Ingreso">
-                <input type="text" value={selectedEmpleado.FechaIngreso ? new Date(selectedEmpleado.FechaIngreso).toLocaleDateString() : ''} disabled style={{ width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '4px', backgroundColor: '#f1f5f9' }} />
+                <input type="text" value={selectedEmpleado.FechaIngreso ? formatDateStr(selectedEmpleado.FechaIngreso) : ''} disabled style={{ width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '4px', backgroundColor: '#f1f5f9' }} />
               </BaseInputGroup>
 
               <BaseInputGroup label="Fecha de Salida">
-                <input type="text" value={selectedEmpleado.FechaSalida ? new Date(selectedEmpleado.FechaSalida).toLocaleDateString() : 'N/A'} disabled style={{ width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '4px', backgroundColor: '#f1f5f9' }} />
+                <input type="text" value={selectedEmpleado.FechaSalida ? formatDateStr(selectedEmpleado.FechaSalida) : 'N/A'} disabled style={{ width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '4px', backgroundColor: '#f1f5f9' }} />
               </BaseInputGroup>
 
               <BaseInputGroup label="Cuenta de Banco">
@@ -370,8 +446,8 @@ const Empleados = () => {
                 { header: 'ID', accessor: 'DevengoID' },
                 { header: 'Descripción', accessor: 'NombreDevengo' },
                 { header: 'Valor', accessor: 'Valor', render: (row) => `$${Number(row.Valor).toLocaleString('es-DO', { minimumFractionDigits: 2 })}` },
-                { header: 'Fecha Inicio', accessor: 'FechaInicio', render: (row) => new Date(row.FechaInicio).toLocaleDateString() },
-                { header: 'Fecha Fin', accessor: 'FechaFin', render: (row) => row.FechaFin ? new Date(row.FechaFin).toLocaleDateString() : 'N/A' },
+                { header: 'Fecha Inicio', accessor: 'FechaInicio', render: (row) => formatDateStr(row.FechaInicio) },
+                { header: 'Fecha Fin', accessor: 'FechaFin', render: (row) => row.FechaFin ? formatDateStr(row.FechaFin) : 'N/A' },
                 { header: 'Activo', accessor: 'SueldoActivo', render: (row) => row.SueldoActivo ? 'SI' : 'NO' }
               ]}
               loading={loadingSalarios}
@@ -389,7 +465,7 @@ const Empleados = () => {
               columns={[
                 { header: 'Tipo Acción', accessor: 'TipoAccion' },
                 { header: 'Número', accessor: 'Numero' },
-                { header: 'Fecha Efectivo', accessor: 'FechaEfectivo', render: (row) => row.FechaEfectivo ? new Date(row.FechaEfectivo).toLocaleDateString() : '' },
+                { header: 'Fecha Efectivo', accessor: 'FechaEfectivo', render: (row) => row.FechaEfectivo ? formatDateStr(row.FechaEfectivo) : '' },
                 { header: 'Sueldo', accessor: 'Sueldo', render: (row) => row.Sueldo ? `$${parseFloat(row.Sueldo).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '$0.00' },
                 { header: 'Cargo Asignado', accessor: 'CargoAsignado' },
                 { header: 'Dependencia Asignada', accessor: 'DependenciaAsignada' }
@@ -399,7 +475,48 @@ const Empleados = () => {
           </div>
         )}
 
-        {/* Botón de cerrar fijo en la parte inferior */}
+        {selectedEmpleado && activeTab === 5 && (
+          <div style={{ padding: '10px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #e2e8f0', paddingBottom: '8px', marginBottom: '15px' }}>
+              <h4 style={{ margin: 0, color: '#334155' }}>Historial de Pagos (Nóminas)</h4>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <label style={{ fontSize: '13px', fontWeight: '600', color: '#475569' }}>Período (Año):</label>
+                <select 
+                  value={periodoPagos}
+                  onChange={(e) => setPeriodoPagos(e.target.value)}
+                  style={{ padding: '6px 10px', borderRadius: '4px', border: '1px solid #cbd5e1', fontSize: '13px' }}
+                >
+                  {[...Array(10)].map((_, i) => {
+                    const year = currentYear - i;
+                    return <option key={year} value={year}>{year}</option>;
+                  })}
+                </select>
+              </div>
+            </div>
+            <DataTable 
+              data={pagos}
+              loading={loadingPagos}
+              columns={[
+                { header: 'Número', accessor: 'Secuencia' },
+                { header: 'Nómina', accessor: 'TipoNominaID' },
+                { header: 'Desde', accessor: 'FechaInicial', render: (row) => row.FechaInicial ? formatDateStr(row.FechaInicial) : '' },
+                { header: 'Hasta', accessor: 'FechaFinal', render: (row) => row.FechaFinal ? formatDateStr(row.FechaFinal) : '' },
+                { header: 'Fecha', accessor: 'FechaGeneracion', render: (row) => row.FechaGeneracion ? formatDateStr(row.FechaGeneracion) : '' },
+                { header: 'Ingresos', accessor: 'Ingreso', render: (row) => row.Ingreso ? `$${parseFloat(row.Ingreso).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '$0.00' },
+                { header: 'Deducciones', accessor: 'Egreso', render: (row) => row.Egreso ? `$${parseFloat(row.Egreso).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '$0.00' },
+                { 
+                  header: 'Neto', 
+                  accessor: 'Neto', 
+                  render: (row) => <span style={{ fontWeight: 'bold', color: '#16a34a' }}>{row.Neto ? `$${parseFloat(row.Neto).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '$0.00'}</span> 
+                }
+              ]}
+              hideMainHeader={true}
+              onEdit={handleVerDetallePago}
+              editLabel="Detalle"
+            />
+          </div>
+        )}
+
         <div style={{ position: 'absolute', bottom: '20px', right: '20px', display: 'flex', justifyContent: 'flex-end' }}>
           <button 
             onClick={() => setIsModalOpen(false)}
@@ -449,6 +566,51 @@ const Empleados = () => {
         empleado={tiposNominasEmpleado}
         empresaId={empresaId}
       />
+
+      <EmpleadoDependientesModal 
+        isOpen={isDependientesModalOpen}
+        onClose={() => setIsDependientesModalOpen(false)}
+        empleado={dependientesEmpleado}
+        empresaId={empresaId}
+        onUpdateSuccess={fetchEmpleados}
+      />
+
+      {/* Modal de Transacciones de Empleados */}
+      <EmpleadoTransaccionesModal
+        isOpen={isTransaccionesModalOpen}
+        onClose={() => setIsTransaccionesModalOpen(false)}
+        empleado={transaccionesEmpleado}
+        empresaId={empresaId}
+      />
+
+      <Modal 
+        isOpen={isPagoDetalleModalOpen} 
+        onClose={() => setIsPagoDetalleModalOpen(false)} 
+        title="Detalle de Nómina"
+        size="lg"
+      >
+        <div style={{ padding: '10px' }}>
+          <DataTable 
+            data={pagoDetalleLineas}
+            loading={loadingPagoDetalle}
+            columns={[
+              { header: 'Empleado', accessor: 'EmpleadoID' },
+              { header: 'Desde', accessor: 'FechaInicial', render: (row) => row.FechaInicial ? formatDateStr(row.FechaInicial) : '' },
+              { header: 'Hasta', accessor: 'FechaFinal', render: (row) => row.FechaFinal ? formatDateStr(row.FechaFinal) : '' },
+              { header: 'Transacción', accessor: 'NombreTransaccion' },
+              { 
+                header: 'Efecto', 
+                accessor: 'Efecto', 
+                render: (row) => <span style={{ fontWeight: 'bold', color: row.Efecto === '+' ? '#16a34a' : '#dc2626' }}>{row.Efecto}</span> 
+              },
+              { header: 'Ingresos', accessor: 'Ingreso', render: (row) => row.Ingreso ? `$${parseFloat(row.Ingreso).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '$0.00' },
+              { header: 'Deducciones', accessor: 'Deduccion', render: (row) => row.Deduccion ? `$${parseFloat(row.Deduccion).toLocaleString('en-US', { minimumFractionDigits: 2 })}` : '$0.00' }
+            ]}
+            hideMainHeader={true}
+          />
+        </div>
+      </Modal>
+
     </div>
   );
 };

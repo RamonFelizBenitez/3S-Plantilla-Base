@@ -30,6 +30,7 @@ const ActualizarDatosEmpleadoModal = ({ isOpen, onClose, empleado, empresaId, on
   const [direccionId, setDireccionId] = useState('');
   const [dependenciaId, setDependenciaId] = useState('');
   const [formaPago, setFormaPago] = useState(1);
+  const [fechaIngreso, setFechaIngreso] = useState('');
 
   useEffect(() => {
     if (isOpen) {
@@ -49,6 +50,7 @@ const ActualizarDatosEmpleadoModal = ({ isOpen, onClose, empleado, empresaId, on
       setDireccionId(empleado.DireccionID || '');
       setDependenciaId(empleado.DependenciaID || '');
       setFormaPago(empleado.FormaPago !== undefined ? empleado.FormaPago : 1);
+      setFechaIngreso(empleado.FechaIngreso ? new Date(empleado.FechaIngreso).toISOString().split('T')[0] : '');
     }
   }, [isOpen, empleado]);
 
@@ -97,7 +99,8 @@ const ActualizarDatosEmpleadoModal = ({ isOpen, onClose, empleado, empresaId, on
         TipoNominaID: tipoNominaId,
         DireccionID: direccionId,
         DependenciaID: dependenciaId,
-        FormaPago: parseInt(formaPago)
+        FormaPago: parseInt(formaPago),
+        FechaIngreso: fechaIngreso || null
       };
 
       await axios.put(`/api/empleados/${empleado.EmpleadoID}/datos-nomina?empresaId=${empresaId}`, payload);
@@ -185,6 +188,15 @@ const ActualizarDatosEmpleadoModal = ({ isOpen, onClose, empleado, empresaId, on
                 <option key={tn.TipoNominaID} value={tn.TipoNominaID}>{tn.Descripcion}</option>
               ))}
             </select>
+          </BaseInputGroup>
+
+          <BaseInputGroup label="Fecha de Ingreso">
+            <input 
+              type="date"
+              value={fechaIngreso}
+              onChange={(e) => setFechaIngreso(e.target.value)}
+              style={{ width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '4px' }}
+            />
           </BaseInputGroup>
         </div>
 

@@ -36,7 +36,7 @@ const TiposNominas = () => {
     MinimoHoras: 0, MinimoHorasObligatorio: false, PagarSalario: true, PagarHoras: false,
     CalcularAFP: false, PeriodoAFP: 1, CalcularARS: false, PeriodoARS: 1, CalcularISR: false, PeriodoISR: 1, CalcularDependientes: false, PeriodoDependiente: 1,
     HoraEntrada: '', HoraEntradaaLM: '', HoraEntradaObligatoria: false, HoraEntradaalmObligatoria: false,
-    PromedioDiasMes: 0, PromedioHorasMes: 0, CalcBaseHoraProm: 1, HorasenDia: 8,
+    PromedioDiasMes: 0, PromedioHorasMes: 0, CalcBaseHoraProm: 1, HorasenDia: 8, MontoDependiente: 0,
     CtaPresupuesto: '', SecuenciaSG: '', Capitulo: '', SubCapitulo: '', DAD: '', UE: '', Programa: '', SubPrograma: '', Proyecto: '', Region: '', Provincia: '', Municipio: '', Funcion: '', Concepto: ''
   });
 
@@ -200,12 +200,13 @@ const TiposNominas = () => {
               <InputGroup label="Descripción" name="Descripcion" isRequired width="70%" value={formData.Descripcion} onChange={handleChange} />
             </div>
             <div style={{ display: 'flex', gap: '15px' }}>
-              <InputGroup label="Tipo de Pago" name="TipoPago" type="select" width="30%" options={[{value:1, label:'Efectivo'}, {value:2, label:'Transferencia'}, {value:3, label:'Cheque'}]} value={formData.TipoPago} onChange={handleChange} />
+              <InputGroup label="Tipo de Pago" name="TipoPago" type="select" width="30%" options={[{value:0, label:'Semanal'}, {value:1, label:'Bisemanal'}, {value:2, label:'Quincenal'}, {value:3, label:'Mensual'}]} value={formData.TipoPago} onChange={handleChange} />
               <InputGroup label="Moneda" name="MonedaID" type="select" width="30%" options={monedas.map(m => ({value: m.MonedaID, label: m.Descripcion}))} value={formData.MonedaID} onChange={handleChange} />
               <InputGroup label="Cuenta Contrapartida" name="CuentaIDContrapartida" type="select" width="40%" options={catalogo.map(c => ({value: c.CuentaID, label: `${c.CuentaID} - ${c.Descripcion}`}))} value={formData.CuentaIDContrapartida} onChange={handleChange} />
             </div>
             <div style={{ display: 'flex', gap: '15px' }}>
               <InputGroup label="Secuencia Comprobante" name="SecComprobante" type="select" width="30%" options={secuencias.map(s => ({value: s.SecID, label: `${s.SecID} - ${s.Descripcion}`}))} value={formData.SecComprobante} onChange={handleChange} />
+              <InputGroup label="Monto Dependiente" name="MontoDependiente" type="number" width="30%" value={formData.MontoDependiente} onChange={handleChange} />
               <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginTop: '20px' }}>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '13px' }}><input type="checkbox" name="PagarSalario" checked={formData.PagarSalario} onChange={handleChange} /> Pagar Salario</label>
                 <label style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '13px' }}><input type="checkbox" name="PagarHoras" checked={formData.PagarHoras} onChange={handleChange} /> Pagar Horas</label>

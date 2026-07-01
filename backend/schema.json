@@ -1,0 +1,477 @@
+[
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "EmpleadoID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "EmpresaId",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Nombres",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Nombre1",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Nombre2",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Apellido1",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Apellido2",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "HorasExtra",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "diasvacfisica",
+    "DATA_TYPE": "float"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Direccion",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "CodigoPostal",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Telefono1",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Telefono2",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Celular",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Email",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "URL",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "CiudadID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Cedula",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "EstadoCivil",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Sexo",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Estatus",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "FormaPago",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "CargoId",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "ISR",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "IDSS",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "AFP",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "ARS",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "CuentaBanco",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "FechaNacimiento",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "MonedaID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "DireccionID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "DependenciaID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "TipoNominaID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "PaisID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "ProvinciaID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "MunicipioID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "TurnoId",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "MinisterioPublico",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Poncha",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Nomina",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Incorporado",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "EmpleadoPlanta",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "TipoSangre",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "PaisIDNacimiento",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "ProvinciaIDNacimiento",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "MunicipioIDNacimiento",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Sector",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Referencia",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "FechaNombramiento",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "FechaIngreso",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "FechaSalida",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "CreadoPor",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "ModificadoPor",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "FechaCreado",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "FechaModificado",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "RecordID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "ISRGlobal",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "FechaResolucion",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "Resolucion",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "NMEMPLEADOS",
+    "COLUMN_NAME": "EnCarrera",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "CambiosID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "EmpresaID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "EmpleadoID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "SueldoAct",
+    "DATA_TYPE": "float"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "TipoAccionID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "DireccionIDAct",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "DependenciaIDAct",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "CargoIDAct",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "DireccionID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "CargoID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "DependenciaID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "Sueldo",
+    "DATA_TYPE": "decimal"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "Observacion",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "Procesado",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "FechaRegistro",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "Aprobado",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "FechaNombramiento",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "NumeroNombramiento",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "Anulado",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "FechaCreado",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "CreadoPor",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "ModificadoPor",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHCAMBIOS",
+    "COLUMN_NAME": "FechaModificado",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "DevengoID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "EmpresaID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "EmpleadoID",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "FechaInicio",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "FechaFin",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "SueldoActivo",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "Valor",
+    "DATA_TYPE": "decimal"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "NombreDevengo",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "CreadoPor",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "ModificadoPor",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "FechaCreado",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_NAME": "RHpercep",
+    "COLUMN_NAME": "FechaModificado",
+    "DATA_TYPE": "datetime"
+  }
+]

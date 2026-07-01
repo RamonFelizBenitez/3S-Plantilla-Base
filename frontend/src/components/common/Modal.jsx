@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
-const Modal = ({ title, isOpen, onClose, children, onSubmit, auditData, size = 'default', maxHeight = '70vh', hideFooter = false, headerActions = null }) => {
+const Modal = ({ title, isOpen, onClose, children, onSubmit, auditData, size = 'default', maxHeight = '70vh', hideFooter = false, headerActions = null, submitLabel = 'Guardar' }) => {
   const [activeTab, setActiveTab] = useState('general');
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const Modal = ({ title, isOpen, onClose, children, onSubmit, auditData, size = '
         {activeTab === 'general' && !hideFooter && (
           <div style={{ padding: '20px', borderTop: '1px solid #e2e8f0', display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
             <button type="button" onClick={onClose} style={cancelBtnStyle}>Cancelar</button>
-            <button type="button" onClick={onSubmit} className="btn-primary" style={{ padding: '10px 16px', border: 'none', background: '#2563eb', color: '#fff', borderRadius: '6px', cursor: 'pointer', fontWeight: 500 }}>Guardar</button>
+            <button type="button" onClick={onSubmit} className="btn-primary" style={{ padding: '10px 16px', border: 'none', background: '#2563eb', color: '#fff', borderRadius: '6px', cursor: 'pointer', fontWeight: 500 }}>{submitLabel}</button>
           </div>
         )}
       </div>

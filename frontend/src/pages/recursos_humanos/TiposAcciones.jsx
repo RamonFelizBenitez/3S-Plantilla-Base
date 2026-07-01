@@ -15,6 +15,7 @@ const TIPOS_DISPONIBLES = [
 const TiposAcciones = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [filtroCategoria, setFiltroCategoria] = useState('');
   
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -142,14 +143,35 @@ const TiposAcciones = () => {
     }
   };
 
+  const dataFiltrada = filtroCategoria 
+    ? data.filter(item => item.Tipo === filtroCategoria)
+    : data;
+
+  const extraControls = (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <label style={{ fontWeight: '500', color: '#475569', fontSize: '13px', margin: 0 }}>Categoría:</label>
+      <select 
+        value={filtroCategoria} 
+        onChange={(e) => setFiltroCategoria(e.target.value)}
+        style={{ padding: '6px 12px', borderRadius: '4px', border: '1px solid #cbd5e1', width: '180px', outline: 'none', fontSize: '13px' }}
+      >
+        <option value="">Todas las Categorías</option>
+        {TIPOS_DISPONIBLES.map(tipo => (
+          <option key={tipo} value={tipo}>{tipo}</option>
+        ))}
+      </select>
+    </div>
+  );
+
   return (
     <>
       <DataTable 
         title="Tipos de Acciones de RRHH" 
         columns={columns} 
-        data={data} 
+        data={dataFiltrada} 
         loading={loading}
-        onAdd={() => handleOpenForm()} 
+        extraControls={extraControls}
+        onAdd={() => handleOpenForm()}  
         onEdit={handleOpenForm}
         renderActions={(row) => (
           <button 

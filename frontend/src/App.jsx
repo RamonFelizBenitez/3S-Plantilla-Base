@@ -14,8 +14,16 @@ import Paises from './pages/administracion/Paises';
 import Ciudades from './pages/administracion/Ciudades';
 import Municipios from './pages/administracion/Municipios';
 import Secuencias from './pages/administracion/Secuencias';
-import PeriodosNominas from './pages/nomina/configuracion/PeriodosNominas';
 import TiposTransacciones from './pages/nomina/configuracion/TiposTransacciones';
+import ISR from './pages/nomina/configuracion/ISR';
+import Ley8701 from './pages/nomina/configuracion/Ley8701';
+import PeriodosNominas from './pages/nomina/configuracion/PeriodosNominas';
+import AbrirNomina from './pages/nomina/transacciones/AbrirNomina';
+import CerrarNomina from './pages/nomina/transacciones/CerrarNomina';
+import SubirNominaExcel from './pages/nomina/transacciones/SubirNominaExcel';
+import AplicarDescuentos from './pages/nomina/transacciones/AplicarDescuentos';
+import GenerarNomina from './pages/nomina/procesos/GenerarNomina';
+import ArchivoBanco from './pages/nomina/procesos/ArchivoBanco';
 import PeriodosContables from './pages/administracion/PeriodosContables';
 import CatalogoCuentas from './pages/administracion/CatalogoCuentas';
 import Monedas from './pages/administracion/Monedas';
@@ -34,9 +42,20 @@ import Turnos from './pages/recursos_humanos/Turnos';
 import Direcciones from './pages/recursos_humanos/Direcciones';
 import Designaciones from './pages/recursos_humanos/Designaciones';
 import DesignacionPrint from './pages/recursos_humanos/DesignacionPrint';
+import CambioPrint from './pages/recursos_humanos/CambioPrint';
+import AmonestacionPrint from './pages/recursos_humanos/AmonestacionPrint';
+import VacacionPrint from './pages/recursos_humanos/VacacionPrint';
 import TiposNominas from './pages/recursos_humanos/TiposNominas';
 import ParametrosRRHH from './pages/recursos_humanos/ParametrosRRHH';
+import Clasificaciones from './pages/recursos_humanos/Clasificaciones';
+import Separaciones from './pages/recursos_humanos/Separaciones';
+import Amonestaciones from './pages/recursos_humanos/Amonestaciones';
+import Vacaciones from './pages/recursos_humanos/Vacaciones';
+import Ausencias from './pages/recursos_humanos/Ausencias';
+import AusenciaPrint from './pages/recursos_humanos/AusenciaPrint';
 import Empleados from './pages/nomina/Empleados';
+import ParametrosNomina from './pages/nomina/configuracion/ParametrosNomina';
+import Cambios from './pages/recursos_humanos/Cambios';
 import Placeholder from './pages/Placeholder';
 
 const App = () => {
@@ -46,6 +65,10 @@ const App = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/imprimir/designacion/:id" element={<DesignacionPrint />} />
+          <Route path="/imprimir/cambio/:id" element={<CambioPrint />} />
+          <Route path="/imprimir/amonestacion/:id" element={<AmonestacionPrint />} />
+          <Route path="/imprimir/vacacion/:id" element={<VacacionPrint />} />
+          <Route path="/imprimir/ausencia/:id" element={<AusenciaPrint />} />
           
           {/* Rutas Protegidas (simuladas aquí, idealmente usar un componente PrivateRoute) */}
           <Route path="/" element={<MainLayout />}>
@@ -58,11 +81,10 @@ const App = () => {
             
             {/* ACCIONES (RRHH) */}
             <Route path="designacion" element={<Placeholder title="Designación" />} />
-            <Route path="cambios" element={<Placeholder title="Cambios" />} />
-            <Route path="separacion" element={<Placeholder title="Separación de Servicios" />} />
-            <Route path="amonestaciones" element={<Placeholder title="Amonestaciones" />} />
-            <Route path="vacaciones" element={<Placeholder title="Vacaciones" />} />
-            <Route path="ausencias" element={<Placeholder title="Registro de Ausencias" />} />
+            <Route path="cambios" element={<Cambios />} />
+            <Route path="amonestaciones" element={<Amonestaciones />} />
+            <Route path="vacaciones" element={<Vacaciones />} />
+            <Route path="ausencias" element={<Ausencias />} />
             
             {/* INFORMES (RRHH) */}
             <Route path="informes/solicitudes" element={<Placeholder title="Lista de Solicitudes" />} />
@@ -78,31 +100,37 @@ const App = () => {
             <Route path="recursos-humanos/info/actividades" element={<InfoComplementariaGen title="Actividades" endpoint="actividades" idField="ActividadID" />} />
 
             {/* CONFIGURACIÓN (RRHH) */}
+            <Route path="recursos-humanos/acciones/solicitud" element={<Solicitudes />} />
+            <Route path="recursos-humanos/acciones/designacion" element={<Designaciones />} />
+            <Route path="recursos-humanos/acciones/toma-posesion" element={<Placeholder title="Toma de Posesión" />} />
             <Route path="configuracion/cargos" element={<Cargos />} />
-            <Route path="configuracion/direcciones" element={<Direcciones />} />
-            <Route path="configuracion/turnos" element={<Turnos />} />
-            <Route path="configuracion/tipos-acciones" element={<TiposAcciones />} />
+            <Route path="recursos-humanos/designacion" element={<Designaciones />} />
+            <Route path="cambios" element={<Cambios />} />
+            <Route path="separacion" element={<Separaciones />} />
+
+            <Route path="recursos-humanos/info/dependientes" element={<Placeholder title="Dependientes" />} />
             <Route path="configuracion/sedes" element={<Sedes />} />
             <Route path="configuracion/grupos-ocupacionales" element={<GruposOcupacionales />} />
-            <Route path="configuracion/parametros" element={<ParametrosRRHH />} />
-
-            {/* MÓDULO NÓMINA */}
-            <Route path="nomina/empleados" element={<Empleados />} />
+            <Route path="/configuracion/tipos-acciones" element={<TiposAcciones />} />
+            <Route path="/configuracion/parametros" element={<ParametrosRRHH />} />
+            <Route path="/configuracion/clasificaciones" element={<Clasificaciones />} />
+            <Route path="/nomina/empleados" element={<Empleados />} />
             
-            {/* Transacciones de nomina */}
-            <Route path="nomina/transacciones/abrir" element={<Placeholder title="Abrir nómina" />} />
-            <Route path="nomina/transacciones/subir-excel" element={<Placeholder title="Subir nómina desde Excel" />} />
-            <Route path="nomina/transacciones/aplicar-descuentos" element={<Placeholder title="Aplicar descuentos externo" />} />
+            {/* RUTAS NÓMINA - TRANSACCIONES */}
+            <Route path="nomina/transacciones/abrir" element={<AbrirNomina />} />
+            <Route path="nomina/transacciones/subir-excel" element={<SubirNominaExcel />} />
+            <Route path="nomina/transacciones/aplicar-descuentos" element={<AplicarDescuentos />} />
 
             {/* Calculos */}
             <Route path="nomina/calculos/bonificaciones" element={<Placeholder title="Cálculo de bonificaciones" />} />
             <Route path="nomina/calculos/vacaciones" element={<Placeholder title="Cálculo de vacaciones" />} />
             <Route path="nomina/calculos/regalia" element={<Placeholder title="Cálculo de regalía pascual" />} />
 
-            {/* Proceso */}
-            <Route path="nomina/proceso/generar" element={<Placeholder title="Generar nómina" />} />
-            <Route path="nomina/proceso/cerrar" element={<Placeholder title="Cerrar nómina" />} />
-            <Route path="nomina/proceso/archivo-banco" element={<Placeholder title="Generar archivo de banco" />} />
+            {/* RUTAS NÓMINA - PROCESOS */}
+            <Route path="nomina/proceso/generar" element={<GenerarNomina />} />
+            <Route path="nomina/proceso/cerrar" element={<CerrarNomina />} />
+            <Route path="nomina/procesos/calculo-isr" element={<Placeholder title="Cálculo del ISR" />} />
+            <Route path="nomina/proceso/archivo-banco" element={<ArchivoBanco />} />
             <Route path="nomina/proceso/entrada-diarios" element={<Placeholder title="Generar entrada de diarios" />} />
 
             {/* Informes (Nómina) */}
@@ -116,11 +144,11 @@ const App = () => {
             <Route path="nomina/configuracion/tipos-nominas" element={<TiposNominas />} />
             <Route path="nomina/configuracion/contabilizacion" element={<Placeholder title="Contabilización de nóminas" />} />
             <Route path="nomina/configuracion/cargos" element={<Cargos />} />
-            <Route path="nomina/configuracion/isr" element={<Placeholder title="ISR" />} />
-            <Route path="nomina/configuracion/ley8701" element={<Placeholder title="LEY 87-01" />} />
-            <Route path="nomina/configuracion/periodos" element={<Placeholder title="Periodos de nóminas" />} />
+            <Route path="nomina/configuracion/isr" element={<ISR />} />
+            <Route path="nomina/configuracion/ley8701" element={<Ley8701 />} />
+            <Route path="nomina/configuracion/periodos" element={<PeriodosNominas />} />
             <Route path="nomina/configuracion/param-bonificacion" element={<Placeholder title="Parámetros de bonificación" />} />
-            <Route path="nomina/configuracion/parametros" element={<Placeholder title="Parámetros" />} />
+            <Route path="nomina/configuracion/parametros" element={<ParametrosNomina />} />
             
             {/* ============================================================== */}
           {/* MÓDULO ADMINISTRACIÓN DEL SISTEMA (Reemplaza Seguridad) */}

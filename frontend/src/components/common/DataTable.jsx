@@ -2,7 +2,7 @@ import React, { useContext, useState, useMemo } from 'react';
 import { Plus, Search, FileDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { LanguageContext } from '../../i18n/LanguageContext';
 
-const DataTable = ({ title, columns, data, onAdd, onEdit, loading, addButtonLabel = "Agregar", renderActions, hideMainHeader = false, editLabel }) => {
+const DataTable = ({ title, columns, data, onAdd, onEdit, loading, addButtonLabel = "Agregar", renderActions, hideMainHeader = false, editLabel, extraControls }) => {
   const { t } = useContext(LanguageContext);
   const [searchTerm, setSearchTerm] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -87,7 +87,7 @@ const DataTable = ({ title, columns, data, onAdd, onEdit, loading, addButtonLabe
               onClick={onAdd}
               style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#22c55e', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontWeight: '600', fontSize: '14px' }}
             >
-              <Plus size={16} /> Nueva {title.split(' ').pop()} {/* Ej. "Nueva Solicitud" */}
+              <Plus size={16} /> {addButtonLabel !== "Agregar" ? addButtonLabel : `Nueva ${title.split(' ').pop()}`}
             </button>
           </div>
         )}
@@ -120,15 +120,17 @@ const DataTable = ({ title, columns, data, onAdd, onEdit, loading, addButtonLabe
             </div>
           </div>
 
-          {/* Lado Derecho: Búsqueda */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-             <span style={{ fontSize: '13px', color: 'var(--clr-text-2)', fontWeight: '500' }}>Buscar:</span>
-             <div style={{ position: 'relative' }}>
-               <input 
+          {/* Lado Derecho: Controles Extra y Búsqueda */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px', flex: 1, justifyContent: 'flex-end' }}>
+            {extraControls}
+            
+            <div style={{ position: 'relative', minWidth: '250px' }}>
+              <Search size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+              <input 
                  type="text" 
                  value={searchTerm}
                  onChange={(e) => setSearchTerm(e.target.value)}
-                 style={{ padding: '6px 12px', paddingRight: '30px', border: '1px solid #cbd5e1', borderRadius: '4px', fontSize: '13px', outline: 'none', width: '250px' }}
+                 style={{ padding: '6px 12px', paddingLeft: '30px', border: '1px solid #cbd5e1', borderRadius: '4px', fontSize: '13px', outline: 'none', width: '100%' }}
                />
              </div>
           </div>
@@ -157,9 +159,11 @@ const DataTable = ({ title, columns, data, onAdd, onEdit, loading, addButtonLabe
                       </td>
                     ))}
                     <td style={{ display: 'flex', gap: '8px' }}>
-                      <button className="btn-action-pill" onClick={() => onEdit(row)} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 12px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>
-                        {editLabel ? (typeof editLabel === 'function' ? editLabel(row) : editLabel) : "Editar"}
-                      </button>
+                      {onEdit && (
+                        <button className="btn-action-pill" onClick={() => onEdit(row)} style={{ background: '#3b82f6', color: '#fff', border: 'none', padding: '4px 12px', borderRadius: '4px', cursor: 'pointer', fontSize: '12px' }}>
+                          {editLabel ? (typeof editLabel === 'function' ? editLabel(row) : editLabel) : "Editar"}
+                        </button>
+                      )}
                       {renderActions && renderActions(row, idx, filteredData.length)}
                     </td>
                   </tr>

@@ -4,7 +4,6 @@ import Swal from 'sweetalert2';
 import DataTable from '../../../components/common/DataTable';
 import Modal from '../../../components/common/Modal';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
-import useEmpresa from '../../../hooks/useEmpresa';
 
 const BaseInputGroup = ({ label, children }) => (
   <div style={{ marginBottom: '12px' }}>
@@ -16,7 +15,7 @@ const BaseInputGroup = ({ label, children }) => (
 );
 
 const TiposTransacciones = () => {
-  const { empresaId } = useEmpresa();
+  const empresaId = '1';
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,7 +29,9 @@ const TiposTransacciones = () => {
     AFP: false,
     ARS: false,
     Excento: false,
-    Dependiente: false
+    Dependiente: false,
+    Salario: false,
+    EsIncentivo: false
   });
 
   useEffect(() => {
@@ -60,7 +61,9 @@ const TiposTransacciones = () => {
         AFP: row.AFP,
         ARS: row.ARS,
         Excento: row.Excento,
-        Dependiente: row.Dependiente
+        Dependiente: row.Dependiente,
+        Salario: row.Salario,
+        EsIncentivo: row.EsIncentivo
       });
       setIsEditing(true);
     } else {
@@ -72,7 +75,9 @@ const TiposTransacciones = () => {
         AFP: false,
         ARS: false,
         Excento: false,
-        Dependiente: false
+        Dependiente: false,
+        Salario: false,
+        EsIncentivo: false
       });
       setIsEditing(false);
     }
@@ -137,8 +142,8 @@ const TiposTransacciones = () => {
   const columns = [
     { header: 'Código', accessor: 'TipoTransId' },
     { header: 'Descripción', accessor: 'Descripcion' },
-    { 
-      header: 'Tipo', 
+    {
+      header: 'Tipo',
       accessor: 'Tipo',
       render: (row) => row.Tipo === 0 ? 'Ingresos' : 'Egresos'
     },
@@ -146,6 +151,8 @@ const TiposTransacciones = () => {
     { header: 'AFP', accessor: 'AFP', render: (row) => row.AFP ? 'Sí' : 'No' },
     { header: 'ARS', accessor: 'ARS', render: (row) => row.ARS ? 'Sí' : 'No' },
     { header: 'Excento ISR', accessor: 'Excento', render: (row) => row.Excento ? 'Sí' : 'No' },
+    { header: 'Salario', accessor: 'Salario', render: (row) => row.Salario ? 'Sí' : 'No' },
+    { header: 'Incentivo', accessor: 'EsIncentivo', render: (row) => row.EsIncentivo ? 'Sí' : 'No' },
     {
       header: 'Acciones',
       accessor: 'acciones',
@@ -166,7 +173,7 @@ const TiposTransacciones = () => {
     <div style={{ padding: '20px', background: '#fff', borderRadius: '8px', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
         <h2 style={{ margin: 0, color: '#1e293b' }}>Tipos de Transacciones</h2>
-        <button 
+        <button
           onClick={() => handleOpenModal()}
           style={{ display: 'flex', alignItems: 'center', gap: '8px', background: '#10b981', color: '#fff', border: 'none', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
         >
@@ -174,14 +181,14 @@ const TiposTransacciones = () => {
         </button>
       </div>
 
-      <DataTable 
+      <DataTable
         data={data}
         columns={columns}
         loading={loading}
       />
 
-      <Modal 
-        isOpen={isModalOpen} 
+      <Modal
+        isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         title={isEditing ? "Editar Tipo de Transacción" : "Nuevo Tipo de Transacción"}
         size="md"
@@ -190,35 +197,35 @@ const TiposTransacciones = () => {
         <form onSubmit={handleSave} style={{ padding: '20px' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '15px' }}>
             <BaseInputGroup label="Código (ID)">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 name="TipoTransId"
-                value={formData.TipoTransId} 
+                value={formData.TipoTransId}
                 onChange={handleChange}
                 required
                 disabled={isEditing}
                 maxLength="10"
-                style={{ width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '4px', backgroundColor: isEditing ? '#f1f5f9' : 'white' }} 
+                style={{ width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '4px', backgroundColor: isEditing ? '#f1f5f9' : 'white' }}
               />
             </BaseInputGroup>
-            
+
             <BaseInputGroup label="Descripción">
-              <input 
-                type="text" 
+              <input
+                type="text"
                 name="Descripcion"
-                value={formData.Descripcion} 
+                value={formData.Descripcion}
                 onChange={handleChange}
                 required
                 maxLength="50"
-                style={{ width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '4px' }} 
+                style={{ width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '4px' }}
               />
             </BaseInputGroup>
           </div>
 
           <BaseInputGroup label="Tipo">
-            <select 
+            <select
               name="Tipo"
-              value={formData.Tipo} 
+              value={formData.Tipo}
               onChange={handleChange}
               required
               style={{ width: '100%', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '4px' }}
@@ -241,20 +248,26 @@ const TiposTransacciones = () => {
             <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#334155', cursor: 'pointer' }}>
               <input type="checkbox" name="Dependiente" checked={formData.Dependiente} onChange={handleChange} /> Dependiente
             </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#334155', cursor: 'pointer', gridColumn: 'span 2' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#334155', cursor: 'pointer', gridColumn: 'span 1' }}>
               <input type="checkbox" name="Excento" checked={formData.Excento} onChange={handleChange} /> Excento ISR
             </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#334155', cursor: 'pointer', gridColumn: 'span 1' }}>
+              <input type="checkbox" name="Salario" checked={formData.Salario} onChange={handleChange} /> Salario
+            </label>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#334155', cursor: 'pointer', gridColumn: 'span 1' }}>
+              <input type="checkbox" name="EsIncentivo" checked={formData.EsIncentivo} onChange={handleChange} /> Es Incentivo
+            </label>
           </div>
-          
+
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: '20px' }}>
-            <button 
-              type="button" 
+            <button
+              type="button"
               onClick={() => setIsModalOpen(false)}
               style={{ padding: '8px 16px', background: '#e2e8f0', color: '#475569', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
             >
               Cancelar
             </button>
-            <button 
+            <button
               type="submit"
               disabled={loading}
               style={{ padding: '8px 16px', background: '#3b82f6', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}

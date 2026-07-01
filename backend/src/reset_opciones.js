@@ -53,7 +53,8 @@ async function resetOpciones() {
         await pool.request().query(`INSERT INTO Opciones (ModuloID, CarpetaPadreID, Nombre, Ruta, Icono, EsCarpeta, Orden) VALUES (1, ${fConf}, 'Tipos de Acciones', '/configuracion/tipos-acciones', '', 0, 3)`);
         await pool.request().query(`INSERT INTO Opciones (ModuloID, CarpetaPadreID, Nombre, Ruta, Icono, EsCarpeta, Orden) VALUES (1, ${fConf}, 'Cedes', '/configuracion/cedes', '', 0, 4)`);
         await pool.request().query(`INSERT INTO Opciones (ModuloID, CarpetaPadreID, Nombre, Ruta, Icono, EsCarpeta, Orden) VALUES (1, ${fConf}, 'Grupo Ocupacional', '/configuracion/grupo-ocupacional', '', 0, 5)`);
-        await pool.request().query(`INSERT INTO Opciones (ModuloID, CarpetaPadreID, Nombre, Ruta, Icono, EsCarpeta, Orden) VALUES (1, ${fConf}, 'Parámetros', '/configuracion/parametros', '', 0, 6)`);
+        await pool.request().query(`INSERT INTO Opciones (ModuloID, CarpetaPadreID, Nombre, Ruta, Icono, EsCarpeta, Orden) VALUES (1, ${fConf}, 'Motivos de Separación', '/configuracion/motivos-separacion', '', 0, 6)`);
+        await pool.request().query(`INSERT INTO Opciones (ModuloID, CarpetaPadreID, Nombre, Ruta, Icono, EsCarpeta, Orden) VALUES (1, ${fConf}, 'Parámetros', '/configuracion/parametros', '', 0, 7)`);
 
         // ==========================================
         // MÓDULO 2: NÓMINA
